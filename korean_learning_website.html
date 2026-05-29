@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>韓文自學網站 🇰🇷</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<script>
+// 關閉 Babel 開發警告
+window.Babel && (window.Babel.disableScriptTags = false);
+const _warn = console.warn.bind(console);
+console.warn = (...args) => {
+  if (args[0] && typeof args[0]==='string' && args[0].includes('Babel')) return;
+  _warn(...args);
+};
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%;overflow:hidden}
+body{font-family:'Noto Sans TC','Noto Sans KR',sans-serif;background:linear-gradient(to bottom,#f0f9ff,#e0f2fe);}
+.page-scroll{
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  height:100%;
+}
+.page-scroll::-webkit-scrollbar{width:4px}
+.page-scroll::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:3px}
+
+.korean{font-family:'Noto Sans KR','Noto Sans TC',sans-serif}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fade-in{animation:fadeIn 0.3s ease-out}
+.shake{animation:shake 0.3s ease-out}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:3px}
+input:focus{outline:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const VOCAB_DATA = [{"id":1,"source":"老師講義","category":"職業","korean":"학생","chinese":"學生","pos":"名詞","papago":"학생","hint":"","example":"","exampleCn":"","note":""},{"id":2,"source":"老師講義","category":"職業","korean":"초등학생","chinese":"國小生","pos":"名詞","papago":"초등학생","hint":"","example":"","exampleCn":"","note":""},{"id":3,"source":"老師講義","category":"職業","korean":"중학생","chinese":"國中生","pos":"名詞","papago":"중학생","hint":"","example":"","exampleCn":"","note":""},{"id":4,"source":"老師講義","category":"職業","korean":"고등학생","chinese":"高中生","pos":"名詞","papago":"고등학생","hint":"","example":"","exampleCn":"","note":""},{"id":5,"source":"老師講義","category":"職業","korean":"대학생","chinese":"大學生","pos":"名詞","papago":"대학생","hint":"","example":"","exampleCn":"","note":""},{"id":6,"source":"老師講義","category":"職業","korean":"대학원생","chinese":"研究生","pos":"名詞","papago":"대학원생","hint":"","example":"","exampleCn":"","note":""},{"id":7,"source":"老師講義","category":"職業","korean":"직장인","chinese":"職場人、上班族","pos":"名詞","papago":"직장인","hint":"","example":"","exampleCn":"","note":""},{"id":8,"source":"老師講義","category":"職業","korean":"사업가","chinese":"事業家","pos":"名詞","papago":"사업가","hint":"","example":"","exampleCn":"","note":""},{"id":9,"source":"老師講義","category":"職業","korean":"회사원","chinese":"公司職員","pos":"名詞","papago":"회사원","hint":"","example":"","exampleCn":"","note":""},{"id":10,"source":"老師講義","category":"職業","korean":"프로그래머","chinese":"程式設計師","pos":"名詞","papago":"프로그래머","hint":"","example":"","exampleCn":"","note":""},{"id":11,"source":"老師講義","category":"職業","korean":"가정주부","chinese":"家庭主婦","pos":"名詞","papago":"가정주부","hint":"","example":"","exampleCn":"","note":""},{"id":12,"source":"老師講義","category":"職業","korean":"자영업자","chinese":"自營業者","pos":"名詞","papago":"자영업자","hint":"","example":"","exampleCn":"","note":""},{"id":13,"source":"老師講義","category":"職業","korean":"프리랜서","chinese":"自由工作者","pos":"名詞","papago":"프리랜서","hint":"","example":"","exampleCn":"","note":""},{"id":14,"source":"老師講義","category":"職業","korean":"포클레인 기사","chinese":"挖土機司機","pos":"名詞","papago":"포클레인 기사","hint":"","example":"","exampleCn":"","note":""},{"id":15,"source":"老師講義","category":"職業","korean":"유튜버","chinese":"YouTuber","pos":"名詞","papago":"유튜버","hint":"","example":"","exampleCn":"","note":""},{"id":16,"source":"老師講義","category":"職業","korean":"디자이너","chinese":"設計師","pos":"名詞","papago":"디자이너","hint":"","example":"","exampleCn":"","note":""},{"id":17,"source":"老師講義","category":"職業","korean":"엔지니어","chinese":"工程師","pos":"名詞","papago":"엔지니어","hint":"","example":"","exampleCn":"","note":""},{"id":18,"source":"老師講義","category":"職業","korean":"요리사","chinese":"廚師","pos":"名詞","papago":"요리사","hint":"","example":"","exampleCn":"","note":""},{"id":19,"source":"老師講義","category":"職業","korean":"셰프","chinese":"廚師、主廚","pos":"名詞","papago":"셰프","hint":"","example":"","exampleCn":"","note":""},{"id":20,"source":"老師講義","category":"職業","korean":"영화감독","chinese":"電影導演","pos":"名詞","papago":"영화감독","hint":"","example":"","exampleCn":"","note":""},{"id":21,"source":"老師講義","category":"職業","korean":"기사","chinese":"司機","pos":"名詞","papago":"기사","hint":"","example":"","exampleCn":"","note":""},{"id":22,"source":"老師講義","category":"職業","korean":"가이드","chinese":"導遊","pos":"名詞","papago":"가이드","hint":"","example":"","exampleCn":"","note":""},{"id":23,"source":"老師講義","category":"職業","korean":"헤어디자이너","chinese":"髮型師","pos":"名詞","papago":"헤어디자이너","hint":"","example":"","exampleCn":"","note":""},{"id":24,"source":"老師講義","category":"職業","korean":"승무원","chinese":"空服員","pos":"名詞","papago":"승무원","hint":"","example":"","exampleCn":"","note":""},{"id":25,"source":"老師講義","category":"職業","korean":"의사","chinese":"醫生","pos":"名詞","papago":"의사","hint":"","example":"","exampleCn":"","note":""},{"id":26,"source":"老師講義","category":"職業","korean":"간호사","chinese":"護士","pos":"名詞","papago":"간호사","hint":"","example":"","exampleCn":"","note":""},{"id":27,"source":"老師講義","category":"職業","korean":"수의사","chinese":"獸醫","pos":"名詞","papago":"수의사","hint":"","example":"","exampleCn":"","note":""},{"id":28,"source":"老師講義","category":"職業","korean":"약사","chinese":"藥師","pos":"名詞","papago":"약사","hint":"","example":"","exampleCn":"","note":""},{"id":29,"source":"老師講義","category":"職業","korean":"판사","chinese":"裁判官、法官","pos":"名詞","papago":"판사","hint":"","example":"","exampleCn":"","note":""},{"id":30,"source":"老師講義","category":"職業","korean":"검사","chinese":"檢察官","pos":"名詞","papago":"검사","hint":"","example":"","exampleCn":"","note":""},{"id":31,"source":"老師講義","category":"職業","korean":"변호사","chinese":"律師","pos":"名詞","papago":"변호사","hint":"","example":"","exampleCn":"","note":""},{"id":32,"source":"老師講義","category":"職業","korean":"운동선수","chinese":"運動選手","pos":"名詞","papago":"운동선수","hint":"","example":"","exampleCn":"","note":""},{"id":33,"source":"老師講義","category":"職業","korean":"코치","chinese":"教練","pos":"名詞","papago":"코치","hint":"","example":"","exampleCn":"","note":""},{"id":34,"source":"老師講義","category":"職業","korean":"감독","chinese":"總教練、導演","pos":"名詞","papago":"감독","hint":"","example":"","exampleCn":"","note":""},{"id":35,"source":"老師講義","category":"職業","korean":"회계사","chinese":"會計師","pos":"名詞","papago":"회계사","hint":"","example":"","exampleCn":"","note":""},{"id":36,"source":"老師講義","category":"職業","korean":"대통령","chinese":"總統","pos":"名詞","papago":"대통령","hint":"","example":"","exampleCn":"","note":""},{"id":37,"source":"老師講義","category":"職業","korean":"국회의원","chinese":"國會議員","pos":"名詞","papago":"국회의원","hint":"","example":"","exampleCn":"","note":""},{"id":38,"source":"老師講義","category":"職業","korean":"사장","chinese":"社長、老闆","pos":"名詞","papago":"사장","hint":"","example":"","exampleCn":"","note":""},{"id":39,"source":"老師講義","category":"職業","korean":"공무원","chinese":"公務員","pos":"名詞","papago":"공무원","hint":"","example":"","exampleCn":"","note":""},{"id":40,"source":"老師講義","category":"職業","korean":"외교관","chinese":"外交官","pos":"名詞","papago":"외교관","hint":"","example":"","exampleCn":"","note":""},{"id":41,"source":"老師講義","category":"職業","korean":"경찰관","chinese":"警察","pos":"名詞","papago":"경찰관","hint":"","example":"","exampleCn":"","note":""},{"id":42,"source":"老師講義","category":"職業","korean":"군인","chinese":"軍人","pos":"名詞","papago":"군인","hint":"","example":"","exampleCn":"","note":""},{"id":43,"source":"老師講義","category":"職業","korean":"화가","chinese":"畫家","pos":"名詞","papago":"화가","hint":"","example":"","exampleCn":"","note":""},{"id":44,"source":"老師講義","category":"職業","korean":"음악가","chinese":"音樂家","pos":"名詞","papago":"음악가","hint":"","example":"","exampleCn":"","note":""},{"id":45,"source":"老師講義","category":"職業","korean":"작가","chinese":"作家","pos":"名詞","papago":"작가","hint":"","example":"","exampleCn":"","note":""},{"id":46,"source":"老師講義","category":"職業","korean":"연예인","chinese":"藝人","pos":"名詞","papago":"연예인","hint":"","example":"","exampleCn":"","note":""},{"id":47,"source":"老師講義","category":"職業","korean":"가수","chinese":"歌手","pos":"名詞","papago":"가수","hint":"","example":"","exampleCn":"","note":""},{"id":48,"source":"老師講義","category":"職業","korean":"배우","chinese":"演員","pos":"名詞","papago":"배우","hint":"","example":"","exampleCn":"","note":""},{"id":49,"source":"老師講義","category":"職業","korean":"MC","chinese":"主持人","pos":"名詞","papago":"MC","hint":"","example":"","exampleCn":"","note":""},{"id":50,"source":"老師講義","category":"職業","korean":"개그맨","chinese":"搞笑藝人","pos":"名詞","papago":"개그맨","hint":"","example":"","exampleCn":"","note":""},{"id":51,"source":"老師講義","category":"職業","korean":"앵커","chinese":"新聞主播","pos":"名詞","papago":"앵커","hint":"","example":"","exampleCn":"","note":""},{"id":52,"source":"老師講義","category":"職業","korean":"PD","chinese":"製作人","pos":"名詞","papago":"PD","hint":"","example":"","exampleCn":"","note":""},{"id":53,"source":"老師講義","category":"職業","korean":"기자","chinese":"記者","pos":"名詞","papago":"기자","hint":"","example":"","exampleCn":"","note":""},{"id":54,"source":"老師講義","category":"職業","korean":"선생님","chinese":"老師","pos":"名詞","papago":"선생님","hint":"","example":"","exampleCn":"","note":""},{"id":55,"source":"老師講義","category":"職業","korean":"교사","chinese":"教師","pos":"名詞","papago":"교사","hint":"","example":"","exampleCn":"","note":""},{"id":56,"source":"老師講義","category":"職業","korean":"교수","chinese":"教授","pos":"名詞","papago":"교수","hint":"","example":"","exampleCn":"","note":""},{"id":57,"source":"老師講義","category":"場所","korean":"이곳","chinese":"這個地方","pos":"名詞","papago":"이곳","hint":"","example":"","exampleCn":"","note":""},{"id":58,"source":"老師講義","category":"場所","korean":"학교","chinese":"學校","pos":"名詞","papago":"학교","hint":"","example":"","exampleCn":"","note":""},{"id":59,"source":"老師講義","category":"場所","korean":"초등학교","chinese":"國小","pos":"名詞","papago":"초등학교","hint":"","example":"","exampleCn":"","note":""},{"id":60,"source":"老師講義","category":"場所","korean":"중학교","chinese":"國中","pos":"名詞","papago":"중학교","hint":"","example":"","exampleCn":"","note":""},{"id":61,"source":"老師講義","category":"場所","korean":"고등학교","chinese":"高中","pos":"名詞","papago":"고등학교","hint":"","example":"","exampleCn":"","note":""},{"id":62,"source":"老師講義","category":"場所","korean":"대학교","chinese":"大學","pos":"名詞","papago":"대학교","hint":"","example":"","exampleCn":"","note":""},{"id":63,"source":"老師講義","category":"場所","korean":"대학원","chinese":"研究所","pos":"名詞","papago":"대학원","hint":"","example":"","exampleCn":"","note":""},{"id":64,"source":"老師講義","category":"場所","korean":"유치원","chinese":"幼稚園","pos":"名詞","papago":"유치원","hint":"","example":"","exampleCn":"","note":""},{"id":65,"source":"老師講義","category":"場所","korean":"학원","chinese":"補習班","pos":"名詞","papago":"학원","hint":"","example":"","exampleCn":"","note":""},{"id":66,"source":"老師講義","category":"場所","korean":"회사","chinese":"公司","pos":"名詞","papago":"회사","hint":"","example":"","exampleCn":"","note":""},{"id":67,"source":"老師講義","category":"場所","korean":"식당","chinese":"餐廳","pos":"名詞","papago":"식당","hint":"","example":"","exampleCn":"","note":""},{"id":68,"source":"老師講義","category":"場所","korean":"음식점","chinese":"餐廳","pos":"名詞","papago":"음식점","hint":"","example":"","exampleCn":"","note":""},{"id":69,"source":"老師講義","category":"場所","korean":"한식당","chinese":"韓式餐廳","pos":"名詞","papago":"한식당","hint":"","example":"","exampleCn":"","note":""},{"id":70,"source":"老師講義","category":"場所","korean":"중식당","chinese":"中式餐廳","pos":"名詞","papago":"중식당","hint":"","example":"","exampleCn":"","note":""},{"id":71,"source":"老師講義","category":"場所","korean":"일식당","chinese":"日式餐廳","pos":"名詞","papago":"일식당","hint":"","example":"","exampleCn":"","note":""},{"id":72,"source":"老師講義","category":"場所","korean":"집","chinese":"家","pos":"名詞","papago":"집","hint":"","example":"","exampleCn":"","note":""},{"id":73,"source":"老師講義","category":"場所","korean":"거실","chinese":"客廳","pos":"名詞","papago":"거실","hint":"","example":"","exampleCn":"","note":""},{"id":74,"source":"老師講義","category":"場所","korean":"방","chinese":"房間","pos":"名詞","papago":"방","hint":"","example":"","exampleCn":"","note":""},{"id":75,"source":"老師講義","category":"場所","korean":"안방","chinese":"主臥房","pos":"名詞","papago":"안방","hint":"","example":"","exampleCn":"","note":""},{"id":76,"source":"老師講義","category":"場所","korean":"욕실","chinese":"浴室","pos":"名詞","papago":"욕실","hint":"","example":"","exampleCn":"","note":""},{"id":77,"source":"老師講義","category":"場所","korean":"화장실","chinese":"洗手間、廁所","pos":"名詞","papago":"화장실","hint":"","example":"","exampleCn":"","note":""},{"id":78,"source":"老師講義","category":"場所","korean":"주방","chinese":"廚房","pos":"名詞","papago":"주방","hint":"","example":"","exampleCn":"","note":""},{"id":79,"source":"老師講義","category":"場所","korean":"부엌","chinese":"廚房","pos":"名詞","papago":"부엌","hint":"","example":"","exampleCn":"","note":""},{"id":80,"source":"老師講義","category":"場所","korean":"베란다","chinese":"陽台","pos":"名詞","papago":"베란다","hint":"","example":"","exampleCn":"","note":""},{"id":81,"source":"老師講義","category":"場所","korean":"편의점","chinese":"便利商店","pos":"名詞","papago":"편의점","hint":"","example":"","exampleCn":"","note":""},{"id":82,"source":"老師講義","category":"場所","korean":"마트","chinese":"超市、大賣場","pos":"名詞","papago":"마트","hint":"","example":"","exampleCn":"","note":""},{"id":83,"source":"老師講義","category":"場所","korean":"시장","chinese":"市場","pos":"名詞","papago":"시장","hint":"","example":"","exampleCn":"","note":""},{"id":84,"source":"老師講義","category":"場所","korean":"야시장","chinese":"夜市","pos":"名詞","papago":"야시장","hint":"","example":"","exampleCn":"","note":""},{"id":85,"source":"老師講義","category":"場所","korean":"가게","chinese":"商店","pos":"名詞","papago":"가게","hint":"","example":"","exampleCn":"","note":""},{"id":86,"source":"老師講義","category":"場所","korean":"백화점","chinese":"百貨公司","pos":"名詞","papago":"백화점","hint":"","example":"","exampleCn":"","note":""},{"id":87,"source":"老師講義","category":"場所","korean":"아울렛","chinese":"Outlet、暢貨中心","pos":"名詞","papago":"아울렛","hint":"","example":"","exampleCn":"","note":""},{"id":88,"source":"老師講義","category":"場所","korean":"커피숍","chinese":"咖啡廳","pos":"名詞","papago":"커피숍","hint":"","example":"","exampleCn":"","note":""},{"id":89,"source":"老師講義","category":"場所","korean":"카페","chinese":"咖啡廳","pos":"名詞","papago":"카페","hint":"","example":"","exampleCn":"","note":""},{"id":90,"source":"老師講義","category":"場所","korean":"스타벅스","chinese":"Starbucks","pos":"名詞","papago":"스타벅스","hint":"","example":"","exampleCn":"","note":""},{"id":91,"source":"老師講義","category":"場所","korean":"맥도날드","chinese":"麥當勞","pos":"名詞","papago":"맥도날드","hint":"","example":"","exampleCn":"","note":""},{"id":92,"source":"老師講義","category":"場所","korean":"서점","chinese":"書店","pos":"名詞","papago":"서점","hint":"","example":"","exampleCn":"","note":""},{"id":93,"source":"老師講義","category":"場所","korean":"애견샵","chinese":"寵物店","pos":"名詞","papago":"애견샵","hint":"","example":"","exampleCn":"","note":""},{"id":94,"source":"老師講義","category":"場所","korean":"미용실","chinese":"美髮店、髮廊","pos":"名詞","papago":"미용실","hint":"","example":"","exampleCn":"","note":""},{"id":95,"source":"老師講義","category":"場所","korean":"병원","chinese":"醫院","pos":"名詞","papago":"병원","hint":"","example":"","exampleCn":"","note":""},{"id":96,"source":"老師講義","category":"場所","korean":"약국","chinese":"藥局","pos":"名詞","papago":"약국","hint":"","example":"","exampleCn":"","note":""},{"id":97,"source":"老師講義","category":"場所","korean":"우체국","chinese":"郵局","pos":"名詞","papago":"우체국","hint":"","example":"","exampleCn":"","note":""},{"id":98,"source":"老師講義","category":"場所","korean":"은행","chinese":"銀行","pos":"名詞","papago":"은행","hint":"","example":"","exampleCn":"","note":""},{"id":99,"source":"老師講義","category":"場所","korean":"도서관","chinese":"圖書館","pos":"名詞","papago":"도서관","hint":"","example":"","exampleCn":"","note":""},{"id":100,"source":"老師講義","category":"場所","korean":"호텔","chinese":"飯店","pos":"名詞","papago":"호텔","hint":"","example":"","exampleCn":"","note":""},{"id":101,"source":"老師講義","category":"場所","korean":"빨래방","chinese":"自助洗衣店","pos":"名詞","papago":"빨래방","hint":"","example":"","exampleCn":"","note":""},{"id":102,"source":"老師講義","category":"場所","korean":"세탁소","chinese":"洗衣店","pos":"名詞","papago":"세탁소","hint":"","example":"","exampleCn":"","note":""},{"id":103,"source":"老師講義","category":"場所","korean":"공항","chinese":"機場","pos":"名詞","papago":"공항","hint":"","example":"","exampleCn":"","note":""},{"id":104,"source":"老師講義","category":"場所","korean":"지하철역","chinese":"地鐵站","pos":"名詞","papago":"지하철역","hint":"","example":"","exampleCn":"","note":""},{"id":105,"source":"老師講義","category":"場所","korean":"사진관","chinese":"照相館","pos":"名詞","papago":"사진관","hint":"","example":"","exampleCn":"","note":""},{"id":106,"source":"老師講義","category":"場所","korean":"노래방","chinese":"KTV","pos":"名詞","papago":"노래방","hint":"","example":"","exampleCn":"","note":""},{"id":107,"source":"老師講義","category":"場所","korean":"주차장","chinese":"停車場","pos":"名詞","papago":"주차장","hint":"","example":"","exampleCn":"","note":""},{"id":108,"source":"老師講義","category":"場所","korean":"수영장","chinese":"游泳池","pos":"名詞","papago":"수영장","hint":"","example":"","exampleCn":"","note":""},{"id":109,"source":"老師講義","category":"場所","korean":"헬스장","chinese":"健身房","pos":"名詞","papago":"헬스장","hint":"","example":"","exampleCn":"","note":""},{"id":110,"source":"老師講義","category":"場所","korean":"운동장","chinese":"運動場","pos":"名詞","papago":"운동장","hint":"","example":"","exampleCn":"","note":""},{"id":111,"source":"老師講義","category":"場所","korean":"스키장","chinese":"滑雪場","pos":"名詞","papago":"스키장","hint":"","example":"","exampleCn":"","note":""},{"id":112,"source":"老師講義","category":"場所","korean":"공원","chinese":"公園","pos":"名詞","papago":"공원","hint":"","example":"","exampleCn":"","note":""},{"id":113,"source":"老師講義","category":"場所","korean":"박물관","chinese":"博物館","pos":"名詞","papago":"박물관","hint":"","example":"","exampleCn":"","note":""},{"id":114,"source":"老師講義","category":"場所","korean":"미술관","chinese":"美術館","pos":"名詞","papago":"미술관","hint":"","example":"","exampleCn":"","note":""},{"id":115,"source":"老師講義","category":"場所","korean":"동물원","chinese":"動物園","pos":"名詞","papago":"동물원","hint":"","example":"","exampleCn":"","note":""},{"id":116,"source":"老師講義","category":"場所","korean":"식물원","chinese":"植物園","pos":"名詞","papago":"식물원","hint":"","example":"","exampleCn":"","note":""},{"id":117,"source":"老師講義","category":"場所","korean":"놀이공원","chinese":"遊樂園","pos":"名詞","papago":"놀이공원","hint":"","example":"","exampleCn":"","note":""},{"id":118,"source":"老師講義","category":"場所","korean":"극장","chinese":"劇場、電影院","pos":"名詞","papago":"극장","hint":"","example":"","exampleCn":"","note":""},{"id":119,"source":"老師講義","category":"場所","korean":"영화관","chinese":"電影院","pos":"名詞","papago":"영화관","hint":"","example":"","exampleCn":"","note":""},{"id":120,"source":"老師講義","category":"場所","korean":"목욕탕","chinese":"澡堂","pos":"名詞","papago":"목욕탕","hint":"","example":"","exampleCn":"","note":""},{"id":121,"source":"老師講義","category":"場所","korean":"사우나","chinese":"三溫暖","pos":"名詞","papago":"사우나","hint":"","example":"","exampleCn":"","note":""},{"id":122,"source":"老師講義","category":"場所","korean":"바다","chinese":"海","pos":"名詞","papago":"바다","hint":"","example":"","exampleCn":"","note":""},{"id":123,"source":"老師講義","category":"場所","korean":"산","chinese":"山","pos":"名詞","papago":"산","hint":"","example":"","exampleCn":"","note":""},{"id":124,"source":"老師講義","category":"場所","korean":"클럽","chinese":"夜店","pos":"名詞","papago":"클럽","hint":"","example":"","exampleCn":"","note":""},{"id":125,"source":"老師講義","category":"場所","korean":"술집","chinese":"酒吧","pos":"名詞","papago":"술집","hint":"","example":"","exampleCn":"","note":""},{"id":126,"source":"老師講義","category":"場所","korean":"바","chinese":"Bar","pos":"名詞","papago":"바","hint":"","example":"","exampleCn":"","note":""},{"id":127,"source":"課本附錄單字總表","category":"ㄱ","korean":"가게","chinese":"店","pos":"名詞/其他","papago":"가게","hint":"","example":"","exampleCn":"","note":""},{"id":128,"source":"課本附錄單字總表","category":"ㄱ","korean":"가깝다","chinese":"近的","pos":"名詞/其他","papago":"가깝다","hint":"","example":"","exampleCn":"","note":""},{"id":129,"source":"課本附錄單字總表","category":"ㄱ","korean":"가르치다","chinese":"教","pos":"動詞/片語","papago":"가르치다","hint":"","example":"","exampleCn":"","note":""},{"id":130,"source":"課本附錄單字總表","category":"ㄱ","korean":"가방","chinese":"包包","pos":"名詞/其他","papago":"가방","hint":"","example":"","exampleCn":"","note":""},{"id":131,"source":"課本附錄單字總表","category":"ㄱ","korean":"가볍다","chinese":"輕的","pos":"名詞/其他","papago":"가볍다","hint":"","example":"","exampleCn":"","note":""},{"id":132,"source":"課本附錄單字總表","category":"ㄱ","korean":"가수","chinese":"歌手","pos":"名詞/其他","papago":"가수","hint":"","example":"","exampleCn":"","note":""},{"id":133,"source":"課本附錄單字總表","category":"ㄱ","korean":"가위","chinese":"剪刀","pos":"名詞/其他","papago":"가위","hint":"","example":"","exampleCn":"","note":""},{"id":134,"source":"課本附錄單字總表","category":"ㄱ","korean":"가을","chinese":"秋天","pos":"名詞/其他","papago":"가을","hint":"","example":"","exampleCn":"","note":""},{"id":135,"source":"課本附錄單字總表","category":"ㄱ","korean":"가짜","chinese":"假的、東西","pos":"名詞/其他","papago":"가짜","hint":"","example":"","exampleCn":"","note":""},{"id":136,"source":"課本附錄單字總表","category":"ㄱ","korean":"갈비탕","chinese":"排骨湯","pos":"名詞/其他","papago":"갈비탕","hint":"","example":"","exampleCn":"","note":""},{"id":137,"source":"課本附錄單字總表","category":"ㄱ","korean":"같이","chinese":"一起","pos":"名詞/其他","papago":"같이","hint":"","example":"","exampleCn":"","note":""},{"id":138,"source":"課本附錄單字總表","category":"ㄱ","korean":"개미","chinese":"螞蟻","pos":"名詞/其他","papago":"개미","hint":"","example":"","exampleCn":"","note":""},{"id":139,"source":"課本附錄單字總表","category":"ㄱ","korean":"거기","chinese":"那裡","pos":"名詞/其他","papago":"거기","hint":"","example":"","exampleCn":"","note":""},{"id":140,"source":"課本附錄單字總表","category":"ㄱ","korean":"걷다","chinese":"走路","pos":"動詞/片語","papago":"걷다","hint":"","example":"","exampleCn":"","note":""},{"id":141,"source":"課本附錄單字總表","category":"ㄱ","korean":"걸어서 가다","chinese":"用走的去","pos":"動詞/片語","papago":"걸어서 가다","hint":"","example":"","exampleCn":"","note":""},{"id":142,"source":"課本附錄單字總表","category":"ㄱ","korean":"게","chinese":"螃蟹","pos":"名詞/其他","papago":"게","hint":"","example":"","exampleCn":"","note":""},{"id":143,"source":"課本附錄單字總表","category":"ㄱ","korean":"게임을 하다","chinese":"玩遊戲","pos":"動詞/片語","papago":"게임을 하다","hint":"","example":"","exampleCn":"","note":""},{"id":144,"source":"課本附錄單字總表","category":"ㄱ","korean":"겨울","chinese":"冬天","pos":"名詞/其他","papago":"겨울","hint":"","example":"","exampleCn":"","note":""},{"id":145,"source":"課本附錄單字總表","category":"ㄱ","korean":"계절","chinese":"季節","pos":"名詞/其他","papago":"계절","hint":"","example":"","exampleCn":"","note":""},{"id":146,"source":"課本附錄單字總表","category":"ㄱ","korean":"고기","chinese":"肉","pos":"名詞/其他","papago":"고기","hint":"","example":"","exampleCn":"","note":""},{"id":147,"source":"課本附錄單字總表","category":"ㄱ","korean":"고향","chinese":"家鄉","pos":"名詞/其他","papago":"고향","hint":"","example":"","exampleCn":"","note":""},{"id":148,"source":"課本附錄單字總表","category":"ㄱ","korean":"고추","chinese":"辣椒","pos":"名詞/其他","papago":"고추","hint":"","example":"","exampleCn":"","note":""},{"id":149,"source":"課本附錄單字總表","category":"ㄱ","korean":"곧","chinese":"馬上","pos":"名詞/其他","papago":"곧","hint":"","example":"","exampleCn":"","note":""},{"id":150,"source":"課本附錄單字總表","category":"ㄱ","korean":"곰","chinese":"熊","pos":"名詞/其他","papago":"곰","hint":"","example":"","exampleCn":"","note":""},{"id":151,"source":"課本附錄單字總表","category":"ㄱ","korean":"골프를 치다","chinese":"打高爾夫球","pos":"動詞/片語","papago":"골프를 치다","hint":"","example":"","exampleCn":"","note":""},{"id":152,"source":"課本附錄單字總表","category":"ㄱ","korean":"공","chinese":"球","pos":"名詞/其他","papago":"공","hint":"","example":"","exampleCn":"","note":""},{"id":153,"source":"課本附錄單字總表","category":"ㄱ","korean":"공부하다","chinese":"念書","pos":"動詞/片語","papago":"공부하다","hint":"","example":"","exampleCn":"","note":""},{"id":154,"source":"課本附錄單字總表","category":"ㄱ","korean":"공원","chinese":"公園","pos":"名詞/其他","papago":"공원","hint":"","example":"","exampleCn":"","note":""},{"id":155,"source":"課本附錄單字總表","category":"ㄱ","korean":"공책","chinese":"筆記本","pos":"名詞/其他","papago":"공책","hint":"","example":"","exampleCn":"","note":""},{"id":156,"source":"課本附錄單字總表","category":"ㄱ","korean":"공항","chinese":"機場","pos":"名詞/其他","papago":"공항","hint":"","example":"","exampleCn":"","note":""},{"id":157,"source":"課本附錄單字總表","category":"ㄱ","korean":"과자","chinese":"點心、餅乾","pos":"名詞/其他","papago":"과자","hint":"","example":"","exampleCn":"","note":""},{"id":158,"source":"課本附錄單字總表","category":"ㄱ","korean":"관악산","chinese":"冠岳山","pos":"名詞/其他","papago":"관악산","hint":"","example":"","exampleCn":"","note":""},{"id":159,"source":"課本附錄單字總表","category":"ㄱ","korean":"교수","chinese":"教授","pos":"名詞/其他","papago":"교수","hint":"","example":"","exampleCn":"","note":""},{"id":160,"source":"課本附錄單字總表","category":"ㄱ","korean":"교실","chinese":"教室","pos":"名詞/其他","papago":"교실","hint":"","example":"","exampleCn":"","note":""},{"id":161,"source":"課本附錄單字總表","category":"ㄱ","korean":"교통카드","chinese":"交通卡","pos":"名詞/其他","papago":"교통카드","hint":"","example":"","exampleCn":"","note":""},{"id":162,"source":"課本附錄單字總表","category":"ㄱ","korean":"구","chinese":"九","pos":"名詞/其他","papago":"구","hint":"","example":"","exampleCn":"","note":""},{"id":163,"source":"課本附錄單字總表","category":"ㄱ","korean":"구경하다","chinese":"參觀","pos":"動詞/片語","papago":"구경하다","hint":"","example":"","exampleCn":"","note":""},{"id":164,"source":"課本附錄單字總表","category":"ㄱ","korean":"구두","chinese":"皮鞋","pos":"名詞/其他","papago":"구두","hint":"","example":"","exampleCn":"","note":""},{"id":165,"source":"課本附錄單字總表","category":"ㄱ","korean":"국적","chinese":"國籍","pos":"名詞/其他","papago":"국적","hint":"","example":"","exampleCn":"","note":""},{"id":166,"source":"課本附錄單字總表","category":"ㄱ","korean":"군인","chinese":"軍人","pos":"名詞/其他","papago":"군인","hint":"","example":"","exampleCn":"","note":""},{"id":167,"source":"課本附錄單字總表","category":"ㄱ","korean":"귀","chinese":"耳朵","pos":"名詞/其他","papago":"귀","hint":"","example":"","exampleCn":"","note":""},{"id":168,"source":"課本附錄單字總表","category":"ㄱ","korean":"권","chinese":"本（量詞）","pos":"名詞/其他","papago":"권","hint":"","example":"","exampleCn":"","note":""},{"id":169,"source":"課本附錄單字總表","category":"ㄱ","korean":"귤","chinese":"橘子","pos":"名詞/其他","papago":"귤","hint":"","example":"","exampleCn":"","note":""},{"id":170,"source":"課本附錄單字總表","category":"ㄱ","korean":"그","chinese":"那","pos":"名詞/其他","papago":"그","hint":"","example":"","exampleCn":"","note":""},{"id":171,"source":"課本附錄單字總表","category":"ㄱ","korean":"그네","chinese":"鞦韆","pos":"名詞/其他","papago":"그네","hint":"","example":"","exampleCn":"","note":""},{"id":172,"source":"課本附錄單字總表","category":"ㄱ","korean":"그래서","chinese":"所以","pos":"名詞/其他","papago":"그래서","hint":"","example":"","exampleCn":"","note":""},{"id":173,"source":"課本附錄單字總表","category":"ㄱ","korean":"그래요","chinese":"好啊（表同意）","pos":"名詞/其他","papago":"그래요","hint":"","example":"","exampleCn":"","note":""},{"id":174,"source":"課本附錄單字總表","category":"ㄱ","korean":"그래요?","chinese":"是嗎？","pos":"名詞/其他","papago":"그래요?","hint":"","example":"","exampleCn":"","note":""},{"id":175,"source":"課本附錄單字總表","category":"ㄱ","korean":"그런데","chinese":"可是","pos":"名詞/其他","papago":"그런데","hint":"","example":"","exampleCn":"","note":""},{"id":176,"source":"課本附錄單字總表","category":"ㄱ","korean":"그럼","chinese":"那麼","pos":"名詞/其他","papago":"그럼","hint":"","example":"","exampleCn":"","note":""},{"id":177,"source":"課本附錄單字總表","category":"ㄱ","korean":"그리고","chinese":"還有、然後","pos":"名詞/其他","papago":"그리고","hint":"","example":"","exampleCn":"","note":""},{"id":178,"source":"課本附錄單字總表","category":"ㄱ","korean":"그림","chinese":"圖畫","pos":"名詞/其他","papago":"그림","hint":"","example":"","exampleCn":"","note":""},{"id":179,"source":"課本附錄單字總表","category":"ㄱ","korean":"극장","chinese":"劇場、電影院","pos":"名詞/其他","papago":"극장","hint":"","example":"","exampleCn":"","note":""},{"id":180,"source":"課本附錄單字總表","category":"ㄱ","korean":"금요일","chinese":"星期五","pos":"名詞/其他","papago":"금요일","hint":"","example":"","exampleCn":"","note":""},{"id":181,"source":"課本附錄單字總表","category":"ㄱ","korean":"급","chinese":"等級","pos":"名詞/其他","papago":"급","hint":"","example":"","exampleCn":"","note":""},{"id":182,"source":"課本附錄單字總表","category":"ㄱ","korean":"기념품","chinese":"紀念品","pos":"名詞/其他","papago":"기념품","hint":"","example":"","exampleCn":"","note":""},{"id":183,"source":"課本附錄單字總表","category":"ㄱ","korean":"기다리다","chinese":"等待","pos":"動詞/片語","papago":"기다리다","hint":"","example":"","exampleCn":"","note":""},{"id":184,"source":"課本附錄單字總表","category":"ㄱ","korean":"기숙사","chinese":"宿舍","pos":"名詞/其他","papago":"기숙사","hint":"","example":"","exampleCn":"","note":""},{"id":185,"source":"課本附錄單字總表","category":"ㄱ","korean":"기자","chinese":"記者","pos":"名詞/其他","papago":"기자","hint":"","example":"","exampleCn":"","note":""},{"id":186,"source":"課本附錄單字總表","category":"ㄱ","korean":"기타를 치다","chinese":"彈吉他","pos":"動詞/片語","papago":"기타를 치다","hint":"","example":"","exampleCn":"","note":""},{"id":187,"source":"課本附錄單字總表","category":"ㄱ","korean":"기차표","chinese":"火車票","pos":"名詞/其他","papago":"기차표","hint":"","example":"","exampleCn":"","note":""},{"id":188,"source":"課本附錄單字總表","category":"ㄱ","korean":"길","chinese":"路","pos":"名詞/其他","papago":"길","hint":"","example":"","exampleCn":"","note":""},{"id":189,"source":"課本附錄單字總表","category":"ㄱ","korean":"김밥","chinese":"紫菜包飯、韓式壽司","pos":"名詞/其他","papago":"김밥","hint":"","example":"","exampleCn":"","note":""},{"id":190,"source":"課本附錄單字總表","category":"ㄱ","korean":"김치","chinese":"泡菜","pos":"名詞/其他","papago":"김치","hint":"","example":"","exampleCn":"","note":""},{"id":191,"source":"課本附錄單字總表","category":"ㄱ","korean":"김치볶음밥","chinese":"泡菜炒飯","pos":"名詞/其他","papago":"김치볶음밥","hint":"","example":"","exampleCn":"","note":""},{"id":192,"source":"課本附錄單字總表","category":"ㄱ","korean":"김치전","chinese":"泡菜煎餅","pos":"名詞/其他","papago":"김치전","hint":"","example":"","exampleCn":"","note":""},{"id":193,"source":"課本附錄單字總表","category":"ㄱ","korean":"김치찌개","chinese":"泡菜鍋","pos":"名詞/其他","papago":"김치찌개","hint":"","example":"","exampleCn":"","note":""},{"id":194,"source":"課本附錄單字總表","category":"ㄱ","korean":"까지","chinese":"到","pos":"名詞/其他","papago":"까지","hint":"","example":"","exampleCn":"","note":""},{"id":195,"source":"課本附錄單字總表","category":"ㄱ","korean":"깍두기","chinese":"蘿蔔塊泡菜","pos":"名詞/其他","papago":"깍두기","hint":"","example":"","exampleCn":"","note":""},{"id":196,"source":"課本附錄單字總表","category":"ㄱ","korean":"깎아 주다","chinese":"算便宜點","pos":"動詞/片語","papago":"깎아 주다","hint":"","example":"","exampleCn":"","note":""},{"id":197,"source":"課本附錄單字總表","category":"ㄱ","korean":"깨끗하다","chinese":"乾淨的","pos":"動詞/片語","papago":"깨끗하다","hint":"","example":"","exampleCn":"","note":""},{"id":198,"source":"課本附錄單字總表","category":"ㄱ","korean":"꼬리","chinese":"尾巴","pos":"名詞/其他","papago":"꼬리","hint":"","example":"","exampleCn":"","note":""},{"id":199,"source":"課本附錄單字總表","category":"ㄱ","korean":"꽃","chinese":"花","pos":"名詞/其他","papago":"꽃","hint":"","example":"","exampleCn":"","note":""},{"id":200,"source":"課本附錄單字總表","category":"ㄱ","korean":"끝나다","chinese":"結束","pos":"名詞/其他","papago":"끝나다","hint":"","example":"","exampleCn":"","note":""},{"id":201,"source":"課本附錄單字總表","category":"ㄴ","korean":"나라","chinese":"國家","pos":"名詞/其他","papago":"나라","hint":"","example":"","exampleCn":"","note":""},{"id":202,"source":"課本附錄單字總表","category":"ㄴ","korean":"나무","chinese":"樹","pos":"名詞/其他","papago":"나무","hint":"","example":"","exampleCn":"","note":""},{"id":203,"source":"課本附錄單字總表","category":"ㄴ","korean":"날씨","chinese":"天氣","pos":"名詞/其他","papago":"날씨","hint":"","example":"","exampleCn":"","note":""},{"id":204,"source":"課本附錄單字總表","category":"ㄴ","korean":"남산","chinese":"南山","pos":"名詞/其他","papago":"남산","hint":"","example":"","exampleCn":"","note":""},{"id":205,"source":"課本附錄單字總表","category":"ㄴ","korean":"남자","chinese":"男人","pos":"名詞/其他","papago":"남자","hint":"","example":"","exampleCn":"","note":""},{"id":206,"source":"課本附錄單字總表","category":"ㄴ","korean":"남자 친구","chinese":"男朋友","pos":"名詞/其他","papago":"남자 친구","hint":"","example":"","exampleCn":"","note":""},{"id":207,"source":"課本附錄單字總表","category":"ㄴ","korean":"낮","chinese":"白天","pos":"名詞/其他","papago":"낮","hint":"","example":"","exampleCn":"","note":""},{"id":208,"source":"課本附錄單字總表","category":"ㄴ","korean":"낮잠을 자다","chinese":"睡午覺","pos":"動詞/片語","papago":"낮잠을 자다","hint":"","example":"","exampleCn":"","note":""},{"id":209,"source":"課本附錄單字總表","category":"ㄴ","korean":"내일","chinese":"明天","pos":"名詞/其他","papago":"내일","hint":"","example":"","exampleCn":"","note":""},{"id":210,"source":"課本附錄單字總表","category":"ㄴ","korean":"냉면","chinese":"冷麵","pos":"名詞/其他","papago":"냉면","hint":"","example":"","exampleCn":"","note":""},{"id":211,"source":"課本附錄單字總表","category":"ㄴ","korean":"냉장고","chinese":"冰箱","pos":"名詞/其他","papago":"냉장고","hint":"","example":"","exampleCn":"","note":""},{"id":212,"source":"課本附錄單字總表","category":"ㄴ","korean":"네","chinese":"是的","pos":"名詞/其他","papago":"네","hint":"","example":"","exampleCn":"","note":""},{"id":213,"source":"課本附錄單字總表","category":"ㄴ","korean":"넷","chinese":"四","pos":"名詞/其他","papago":"넷","hint":"","example":"","exampleCn":"","note":""},{"id":214,"source":"課本附錄單字總表","category":"ㄴ","korean":"노래","chinese":"歌曲","pos":"名詞/其他","papago":"노래","hint":"","example":"","exampleCn":"","note":""},{"id":215,"source":"課本附錄單字總表","category":"ㄴ","korean":"노래방","chinese":"KTV","pos":"名詞/其他","papago":"노래방","hint":"","example":"","exampleCn":"","note":""},{"id":216,"source":"課本附錄單字總表","category":"ㄴ","korean":"노래방에 가다","chinese":"去KTV","pos":"動詞/片語","papago":"노래방에 가다","hint":"","example":"","exampleCn":"","note":""},{"id":217,"source":"課本附錄單字總表","category":"ㄴ","korean":"농구를 하다","chinese":"打籃球","pos":"動詞/片語","papago":"농구를 하다","hint":"","example":"","exampleCn":"","note":""},{"id":218,"source":"課本附錄單字總表","category":"ㄴ","korean":"누구","chinese":"誰","pos":"名詞/其他","papago":"누구","hint":"","example":"","exampleCn":"","note":""},{"id":219,"source":"課本附錄單字總表","category":"ㄴ","korean":"눈사람","chinese":"雪人","pos":"名詞/其他","papago":"눈사람","hint":"","example":"","exampleCn":"","note":""},{"id":220,"source":"課本附錄單字總表","category":"ㄴ","korean":"눈이 오다","chinese":"下雪","pos":"動詞/片語","papago":"눈이 오다","hint":"","example":"","exampleCn":"","note":""},{"id":221,"source":"課本附錄單字總表","category":"ㄴ","korean":"뉴스","chinese":"新聞","pos":"名詞/其他","papago":"뉴스","hint":"","example":"","exampleCn":"","note":""},{"id":222,"source":"課本附錄單字總表","category":"ㄴ","korean":"뉴욕","chinese":"紐約","pos":"名詞/其他","papago":"뉴욕","hint":"","example":"","exampleCn":"","note":""},{"id":223,"source":"課本附錄單字總表","category":"ㄷ","korean":"다리","chinese":"腿","pos":"名詞/其他","papago":"다리","hint":"","example":"","exampleCn":"","note":""},{"id":224,"source":"課本附錄單字總表","category":"ㄷ","korean":"다섯","chinese":"五","pos":"名詞/其他","papago":"다섯","hint":"","example":"","exampleCn":"","note":""},{"id":225,"source":"課本附錄單字總表","category":"ㄷ","korean":"다음","chinese":"下次","pos":"名詞/其他","papago":"다음","hint":"","example":"","exampleCn":"","note":""},{"id":226,"source":"課本附錄單字總表","category":"ㄷ","korean":"단풍","chinese":"楓樹","pos":"名詞/其他","papago":"단풍","hint":"","example":"","exampleCn":"","note":""},{"id":227,"source":"課本附錄單字總表","category":"ㄷ","korean":"달걀","chinese":"雞蛋","pos":"名詞/其他","papago":"달걀","hint":"","example":"","exampleCn":"","note":""},{"id":228,"source":"課本附錄單字總表","category":"ㄷ","korean":"당구를 치다","chinese":"打撞球","pos":"動詞/片語","papago":"당구를 치다","hint":"","example":"","exampleCn":"","note":""},{"id":229,"source":"課本附錄單字總表","category":"ㄷ","korean":"대사관","chinese":"大使館","pos":"名詞/其他","papago":"대사관","hint":"","example":"","exampleCn":"","note":""},{"id":230,"source":"課本附錄單字總表","category":"ㄷ","korean":"대학로","chinese":"大學路","pos":"名詞/其他","papago":"대학로","hint":"","example":"","exampleCn":"","note":""},{"id":231,"source":"課本附錄單字總表","category":"ㄷ","korean":"덥다","chinese":"熱的","pos":"名詞/其他","papago":"덥다","hint":"","example":"","exampleCn":"","note":""},{"id":232,"source":"課本附錄單字總表","category":"ㄷ","korean":"더워요","chinese":"熱的","pos":"名詞/其他","papago":"더워요","hint":"","example":"","exampleCn":"","note":""},{"id":233,"source":"課本附錄單字總表","category":"ㄷ","korean":"도서관","chinese":"圖書館","pos":"名詞/其他","papago":"도서관","hint":"","example":"","exampleCn":"","note":""},{"id":234,"source":"課本附錄單字總表","category":"ㄷ","korean":"도쿄","chinese":"東京","pos":"名詞/其他","papago":"도쿄","hint":"","example":"","exampleCn":"","note":""},{"id":235,"source":"課本附錄單字總表","category":"ㄷ","korean":"독일","chinese":"德國","pos":"名詞/其他","papago":"독일","hint":"","example":"","exampleCn":"","note":""},{"id":236,"source":"課本附錄單字總表","category":"ㄷ","korean":"독일 사람","chinese":"德國人","pos":"名詞/其他","papago":"독일 사람","hint":"","example":"","exampleCn":"","note":""},{"id":237,"source":"課本附錄單字總表","category":"ㄷ","korean":"돈","chinese":"錢","pos":"名詞/其他","papago":"돈","hint":"","example":"","exampleCn":"","note":""},{"id":238,"source":"課本附錄單字總表","category":"ㄷ","korean":"돈가스","chinese":"日式豬排飯","pos":"名詞/其他","papago":"돈가스","hint":"","example":"","exampleCn":"","note":""},{"id":239,"source":"課本附錄單字總表","category":"ㄷ","korean":"동생","chinese":"弟弟或妹妹","pos":"名詞/其他","papago":"동생","hint":"","example":"","exampleCn":"","note":""},{"id":240,"source":"課本附錄單字總表","category":"ㄷ","korean":"동전","chinese":"銅板、零錢","pos":"名詞/其他","papago":"동전","hint":"","example":"","exampleCn":"","note":""},{"id":241,"source":"課本附錄單字總表","category":"ㄷ","korean":"돼지","chinese":"豬","pos":"名詞/其他","papago":"돼지","hint":"","example":"","exampleCn":"","note":""},{"id":242,"source":"課本附錄單字總表","category":"ㄷ","korean":"두뇌","chinese":"頭腦","pos":"名詞/其他","papago":"두뇌","hint":"","example":"","exampleCn":"","note":""},{"id":243,"source":"課本附錄單字總表","category":"ㄷ","korean":"둘","chinese":"二","pos":"名詞/其他","papago":"둘","hint":"","example":"","exampleCn":"","note":""},{"id":244,"source":"課本附錄單字總表","category":"ㄷ","korean":"뒤","chinese":"後面","pos":"名詞/其他","papago":"뒤","hint":"","example":"","exampleCn":"","note":""},{"id":245,"source":"課本附錄單字總表","category":"ㄷ","korean":"드라마","chinese":"電視劇","pos":"名詞/其他","papago":"드라마","hint":"","example":"","exampleCn":"","note":""},{"id":246,"source":"課本附錄單字總表","category":"ㄷ","korean":"듣다","chinese":"聽","pos":"動詞/片語","papago":"듣다","hint":"","example":"","exampleCn":"","note":""},{"id":247,"source":"課本附錄單字總表","category":"ㄷ","korean":"들","chinese":"複數詞","pos":"名詞/其他","papago":"들","hint":"","example":"","exampleCn":"","note":""},{"id":248,"source":"課本附錄單字總表","category":"ㄷ","korean":"등산을 하다","chinese":"爬山","pos":"動詞/片語","papago":"등산을 하다","hint":"","example":"","exampleCn":"","note":""},{"id":249,"source":"課本附錄單字總表","category":"ㄷ","korean":"따다","chinese":"採、摘","pos":"名詞/其他","papago":"따다","hint":"","example":"","exampleCn":"","note":""},{"id":250,"source":"課本附錄單字總表","category":"ㄷ","korean":"따뜻하다","chinese":"溫暖的","pos":"動詞/片語","papago":"따뜻하다","hint":"","example":"","exampleCn":"","note":""},{"id":251,"source":"課本附錄單字總表","category":"ㄷ","korean":"딸기","chinese":"草莓","pos":"名詞/其他","papago":"딸기","hint":"","example":"","exampleCn":"","note":""},{"id":252,"source":"課本附錄單字總表","category":"ㄷ","korean":"떡국","chinese":"年糕湯","pos":"名詞/其他","papago":"떡국","hint":"","example":"","exampleCn":"","note":""},{"id":253,"source":"課本附錄單字總表","category":"ㄷ","korean":"떡볶이","chinese":"辣炒年糕","pos":"名詞/其他","papago":"떡볶이","hint":"","example":"","exampleCn":"","note":""},{"id":254,"source":"課本附錄單字總表","category":"ㄷ","korean":"또","chinese":"再","pos":"名詞/其他","papago":"또","hint":"","example":"","exampleCn":"","note":""},{"id":255,"source":"課本附錄單字總表","category":"ㄷ","korean":"뜨다","chinese":"漂浮","pos":"名詞/其他","papago":"뜨다","hint":"","example":"","exampleCn":"","note":""},{"id":256,"source":"課本附錄單字總表","category":"ㄹ","korean":"라디오","chinese":"廣播","pos":"名詞/其他","papago":"라디오","hint":"","example":"","exampleCn":"","note":""},{"id":257,"source":"課本附錄單字總表","category":"ㄹ","korean":"라면","chinese":"泡麵","pos":"名詞/其他","papago":"라면","hint":"","example":"","exampleCn":"","note":""},{"id":258,"source":"課本附錄單字總表","category":"ㄹ","korean":"러시아","chinese":"俄羅斯","pos":"名詞/其他","papago":"러시아","hint":"","example":"","exampleCn":"","note":""},{"id":259,"source":"課本附錄單字總表","category":"ㄹ","korean":"런던","chinese":"倫敦","pos":"名詞/其他","papago":"런던","hint":"","example":"","exampleCn":"","note":""},{"id":260,"source":"課本附錄單字總表","category":"ㄹ","korean":"레몬","chinese":"檸檬","pos":"名詞/其他","papago":"레몬","hint":"","example":"","exampleCn":"","note":""},{"id":261,"source":"課本附錄單字總表","category":"ㄹ","korean":"룸메이트","chinese":"室友","pos":"名詞/其他","papago":"룸메이트","hint":"","example":"","exampleCn":"","note":""},{"id":262,"source":"課本附錄單字總表","category":"ㄹ","korean":"리모컨","chinese":"遙控器","pos":"名詞/其他","papago":"리모컨","hint":"","example":"","exampleCn":"","note":""},{"id":263,"source":"課本附錄單字總表","category":"ㅁ","korean":"마시다","chinese":"喝","pos":"動詞/片語","papago":"마시다","hint":"","example":"","exampleCn":"","note":""},{"id":264,"source":"課本附錄單字總表","category":"ㅁ","korean":"만나다","chinese":"見面","pos":"動詞/片語","papago":"만나다","hint":"","example":"","exampleCn":"","note":""},{"id":265,"source":"課本附錄單字總表","category":"ㅁ","korean":"만 원","chinese":"一萬元","pos":"名詞/其他","papago":"만 원","hint":"","example":"","exampleCn":"","note":""},{"id":266,"source":"課本附錄單字總表","category":"ㅁ","korean":"만들다","chinese":"製作","pos":"動詞/片語","papago":"만들다","hint":"","example":"","exampleCn":"","note":""},{"id":267,"source":"課本附錄單字總表","category":"ㅁ","korean":"많다","chinese":"多的","pos":"名詞/其他","papago":"많다","hint":"","example":"","exampleCn":"","note":""},{"id":268,"source":"課本附錄單字總表","category":"ㅁ","korean":"많이","chinese":"很多地","pos":"名詞/其他","papago":"많이","hint":"","example":"","exampleCn":"","note":""},{"id":269,"source":"課本附錄單字總表","category":"ㅁ","korean":"맑다","chinese":"晴朗的","pos":"名詞/其他","papago":"맑다","hint":"","example":"","exampleCn":"","note":""},{"id":270,"source":"課本附錄單字總表","category":"ㅁ","korean":"맛있다","chinese":"好吃的","pos":"名詞/其他","papago":"맛있다","hint":"","example":"","exampleCn":"","note":""},{"id":271,"source":"課本附錄單字總表","category":"ㅁ","korean":"망고","chinese":"芒果","pos":"名詞/其他","papago":"망고","hint":"","example":"","exampleCn":"","note":""},{"id":272,"source":"課本附錄單字總表","category":"ㅁ","korean":"매일","chinese":"每天","pos":"名詞/其他","papago":"매일","hint":"","example":"","exampleCn":"","note":""},{"id":273,"source":"課本附錄單字總表","category":"ㅁ","korean":"맥주","chinese":"啤酒","pos":"名詞/其他","papago":"맥주","hint":"","example":"","exampleCn":"","note":""},{"id":274,"source":"課本附錄單字總表","category":"ㅁ","korean":"맵다","chinese":"辣的","pos":"名詞/其他","papago":"맵다","hint":"","example":"","exampleCn":"","note":""},{"id":275,"source":"課本附錄單字總表","category":"ㅁ","korean":"머리","chinese":"頭髮","pos":"名詞/其他","papago":"머리","hint":"","example":"","exampleCn":"","note":""},{"id":276,"source":"課本附錄單字總表","category":"ㅁ","korean":"머리띠","chinese":"髮箍","pos":"名詞/其他","papago":"머리띠","hint":"","example":"","exampleCn":"","note":""},{"id":277,"source":"課本附錄單字總表","category":"ㅁ","korean":"먹다","chinese":"吃","pos":"動詞/片語","papago":"먹다","hint":"","example":"","exampleCn":"","note":""},{"id":278,"source":"課本附錄單字總表","category":"ㅁ","korean":"메뉴","chinese":"菜單","pos":"名詞/其他","papago":"메뉴","hint":"","example":"","exampleCn":"","note":""},{"id":279,"source":"課本附錄單字總表","category":"ㅁ","korean":"멜론","chinese":"哈密瓜","pos":"名詞/其他","papago":"멜론","hint":"","example":"","exampleCn":"","note":""},{"id":280,"source":"課本附錄單字總表","category":"ㅁ","korean":"며칠","chinese":"幾日","pos":"名詞/其他","papago":"며칠","hint":"","example":"","exampleCn":"","note":""},{"id":281,"source":"課本附錄單字總表","category":"ㅁ","korean":"명동","chinese":"明洞","pos":"名詞/其他","papago":"명동","hint":"","example":"","exampleCn":"","note":""},{"id":282,"source":"課本附錄單字總表","category":"ㅁ","korean":"명함","chinese":"名片","pos":"名詞/其他","papago":"명함","hint":"","example":"","exampleCn":"","note":""},{"id":283,"source":"課本附錄單字總表","category":"ㅁ","korean":"몇","chinese":"幾、多少","pos":"名詞/其他","papago":"몇","hint":"","example":"","exampleCn":"","note":""},{"id":284,"source":"課本附錄單字總表","category":"ㅁ","korean":"모두","chinese":"全部","pos":"名詞/其他","papago":"모두","hint":"","example":"","exampleCn":"","note":""},{"id":285,"source":"課本附錄單字總表","category":"ㅁ","korean":"모스크바","chinese":"莫斯科","pos":"名詞/其他","papago":"모스크바","hint":"","example":"","exampleCn":"","note":""},{"id":286,"source":"課本附錄單字總表","category":"ㅁ","korean":"모자","chinese":"帽子","pos":"名詞/其他","papago":"모자","hint":"","example":"","exampleCn":"","note":""},{"id":287,"source":"課本附錄單字總表","category":"ㅁ","korean":"목요일","chinese":"星期四","pos":"名詞/其他","papago":"목요일","hint":"","example":"","exampleCn":"","note":""},{"id":288,"source":"課本附錄單字總表","category":"ㅁ","korean":"무겁다","chinese":"重的","pos":"名詞/其他","papago":"무겁다","hint":"","example":"","exampleCn":"","note":""},{"id":289,"source":"課本附錄單字總表","category":"ㅁ","korean":"무릎","chinese":"膝蓋","pos":"名詞/其他","papago":"무릎","hint":"","example":"","exampleCn":"","note":""},{"id":290,"source":"課本附錄單字總表","category":"ㅁ","korean":"무슨","chinese":"什麼","pos":"名詞/其他","papago":"무슨","hint":"","example":"","exampleCn":"","note":""},{"id":291,"source":"課本附錄單字總表","category":"ㅁ","korean":"무엇","chinese":"什麼","pos":"名詞/其他","papago":"무엇","hint":"","example":"","exampleCn":"","note":""},{"id":292,"source":"課本附錄單字總表","category":"ㅁ","korean":"물","chinese":"水","pos":"名詞/其他","papago":"물","hint":"","example":"","exampleCn":"","note":""},{"id":293,"source":"課本附錄單字總表","category":"ㅁ","korean":"물건","chinese":"物品","pos":"名詞/其他","papago":"물건","hint":"","example":"","exampleCn":"","note":""},{"id":294,"source":"課本附錄單字總表","category":"ㅁ","korean":"물김치","chinese":"水泡菜","pos":"名詞/其他","papago":"물김치","hint":"","example":"","exampleCn":"","note":""},{"id":295,"source":"課本附錄單字總表","category":"ㅁ","korean":"뭐","chinese":"什麼","pos":"名詞/其他","papago":"뭐","hint":"","example":"","exampleCn":"","note":""},{"id":296,"source":"課本附錄單字總表","category":"ㅁ","korean":"미국","chinese":"美國","pos":"名詞/其他","papago":"미국","hint":"","example":"","exampleCn":"","note":""},{"id":297,"source":"課本附錄單字總表","category":"ㅁ","korean":"미국 사람","chinese":"美國人","pos":"名詞/其他","papago":"미국 사람","hint":"","example":"","exampleCn":"","note":""},{"id":298,"source":"課本附錄單字總表","category":"ㅁ","korean":"미안하다","chinese":"對不起","pos":"動詞/片語","papago":"미안하다","hint":"","example":"","exampleCn":"","note":""},{"id":299,"source":"課本附錄單字總表","category":"ㅁ","korean":"미용실","chinese":"美容院","pos":"名詞/其他","papago":"미용실","hint":"","example":"","exampleCn":"","note":""},{"id":300,"source":"課本附錄單字總表","category":"ㅁ","korean":"미팅","chinese":"聯誼","pos":"名詞/其他","papago":"미팅","hint":"","example":"","exampleCn":"","note":""},{"id":301,"source":"課本附錄單字總表","category":"ㅁ","korean":"밑","chinese":"下面","pos":"名詞/其他","papago":"밑","hint":"","example":"","exampleCn":"","note":""},{"id":302,"source":"課本附錄單字總表","category":"ㅂ","korean":"바나나","chinese":"香蕉","pos":"名詞/其他","papago":"바나나","hint":"","example":"","exampleCn":"","note":""},{"id":303,"source":"課本附錄單字總表","category":"ㅂ","korean":"바다","chinese":"海","pos":"名詞/其他","papago":"바다","hint":"","example":"","exampleCn":"","note":""},{"id":304,"source":"課本附錄單字總表","category":"ㅂ","korean":"바지","chinese":"褲子","pos":"名詞/其他","papago":"바지","hint":"","example":"","exampleCn":"","note":""},{"id":305,"source":"課本附錄單字總表","category":"ㅂ","korean":"박스","chinese":"箱（量詞）","pos":"名詞/其他","papago":"박스","hint":"","example":"","exampleCn":"","note":""},{"id":306,"source":"課本附錄單字總表","category":"ㅂ","korean":"밖","chinese":"外面","pos":"名詞/其他","papago":"밖","hint":"","example":"","exampleCn":"","note":""},{"id":307,"source":"課本附錄單字總表","category":"ㅂ","korean":"반","chinese":"班級","pos":"名詞/其他","papago":"반","hint":"","example":"","exampleCn":"","note":""},{"id":308,"source":"課本附錄單字總表","category":"ㅂ","korean":"발","chinese":"腳","pos":"名詞/其他","papago":"발","hint":"","example":"","exampleCn":"","note":""},{"id":309,"source":"課本附錄單字總表","category":"ㅂ","korean":"(만나서) 반가워요","chinese":"很高興認識你","pos":"名詞/其他","papago":"(만나서) 반가워요","hint":"","example":"","exampleCn":"","note":""},{"id":310,"source":"課本附錄單字總表","category":"ㅂ","korean":"(만나서) 반갑습니다","chinese":"很高興認識你（正式場合）","pos":"名詞/其他","papago":"(만나서) 반갑습니다","hint":"","example":"","exampleCn":"","note":""},{"id":311,"source":"課本附錄單字總表","category":"ㅂ","korean":"밥","chinese":"飯","pos":"名詞/其他","papago":"밥","hint":"","example":"","exampleCn":"","note":""},{"id":312,"source":"課本附錄單字總表","category":"ㅂ","korean":"밥을 먹다","chinese":"吃飯","pos":"動詞/片語","papago":"밥을 먹다","hint":"","example":"","exampleCn":"","note":""},{"id":313,"source":"課本附錄單字總表","category":"ㅂ","korean":"방","chinese":"房間","pos":"名詞/其他","papago":"방","hint":"","example":"","exampleCn":"","note":""},{"id":314,"source":"課本附錄單字總表","category":"ㅂ","korean":"배","chinese":"船","pos":"名詞/其他","papago":"배","hint":"","example":"","exampleCn":"","note":""},{"id":315,"source":"課本附錄單字總表","category":"ㅂ","korean":"배","chinese":"梨子","pos":"名詞/其他","papago":"배","hint":"","example":"","exampleCn":"","note":""},{"id":316,"source":"課本附錄單字總表","category":"ㅂ","korean":"배우다","chinese":"學","pos":"名詞/其他","papago":"배우다","hint":"","example":"","exampleCn":"","note":""},{"id":317,"source":"課本附錄單字總表","category":"ㅂ","korean":"백 원","chinese":"一百元","pos":"名詞/其他","papago":"백 원","hint":"","example":"","exampleCn":"","note":""},{"id":318,"source":"課本附錄單字總表","category":"ㅂ","korean":"백김치","chinese":"白泡菜","pos":"名詞/其他","papago":"백김치","hint":"","example":"","exampleCn":"","note":""},{"id":319,"source":"課本附錄單字總表","category":"ㅂ","korean":"백화점","chinese":"百貨公司","pos":"名詞/其他","papago":"백화점","hint":"","example":"","exampleCn":"","note":""},{"id":320,"source":"課本附錄單字總表","category":"ㅂ","korean":"버스","chinese":"公車","pos":"名詞/其他","papago":"버스","hint":"","example":"","exampleCn":"","note":""},{"id":321,"source":"課本附錄單字總表","category":"ㅂ","korean":"번","chinese":"～號","pos":"名詞/其他","papago":"번","hint":"","example":"","exampleCn":"","note":""},{"id":322,"source":"課本附錄單字總表","category":"ㅂ","korean":"베이징","chinese":"北京","pos":"名詞/其他","papago":"베이징","hint":"","example":"","exampleCn":"","note":""},{"id":323,"source":"課本附錄單字總表","category":"ㅂ","korean":"병원","chinese":"醫院","pos":"名詞/其他","papago":"병원","hint":"","example":"","exampleCn":"","note":""},{"id":324,"source":"課本附錄單字總表","category":"ㅂ","korean":"보다","chinese":"看","pos":"動詞/片語","papago":"보다","hint":"","example":"","exampleCn":"","note":""},{"id":325,"source":"課本附錄單字總表","category":"ㅂ","korean":"보통","chinese":"通常","pos":"名詞/其他","papago":"보통","hint":"","example":"","exampleCn":"","note":""},{"id":326,"source":"課本附錄單字總表","category":"ㅂ","korean":"복잡하다","chinese":"複雜的","pos":"動詞/片語","papago":"복잡하다","hint":"","example":"","exampleCn":"","note":""},{"id":327,"source":"課本附錄單字總表","category":"ㅂ","korean":"볼펜","chinese":"原子筆","pos":"名詞/其他","papago":"볼펜","hint":"","example":"","exampleCn":"","note":""},{"id":328,"source":"課本附錄單字總表","category":"ㅂ","korean":"봄","chinese":"春天","pos":"名詞/其他","papago":"봄","hint":"","example":"","exampleCn":"","note":""},{"id":329,"source":"課本附錄單字總表","category":"ㅂ","korean":"부산","chinese":"釜山","pos":"名詞/其他","papago":"부산","hint":"","example":"","exampleCn":"","note":""},{"id":330,"source":"課本附錄單字總表","category":"ㅂ","korean":"부엌","chinese":"廚房","pos":"名詞/其他","papago":"부엌","hint":"","example":"","exampleCn":"","note":""},{"id":331,"source":"課本附錄單字總表","category":"ㅂ","korean":"부채","chinese":"扇子","pos":"名詞/其他","papago":"부채","hint":"","example":"","exampleCn":"","note":""},{"id":332,"source":"課本附錄單字總表","category":"ㅂ","korean":"불고기","chinese":"韓式烤牛肉","pos":"名詞/其他","papago":"불고기","hint":"","example":"","exampleCn":"","note":""},{"id":333,"source":"課本附錄單字總表","category":"ㅂ","korean":"브라질","chinese":"巴西","pos":"名詞/其他","papago":"브라질","hint":"","example":"","exampleCn":"","note":""},{"id":334,"source":"課本附錄單字總表","category":"ㅂ","korean":"브라질리아","chinese":"巴西利亞","pos":"名詞/其他","papago":"브라질리아","hint":"","example":"","exampleCn":"","note":""},{"id":335,"source":"課本附錄單字總表","category":"ㅂ","korean":"비가 오다","chinese":"下雨","pos":"動詞/片語","papago":"비가 오다","hint":"","example":"","exampleCn":"","note":""},{"id":336,"source":"課本附錄單字總表","category":"ㅂ","korean":"비빔밥","chinese":"拌飯","pos":"名詞/其他","papago":"비빔밥","hint":"","example":"","exampleCn":"","note":""},{"id":337,"source":"課本附錄單字總表","category":"ㅂ","korean":"비싸다","chinese":"昂貴的","pos":"名詞/其他","papago":"비싸다","hint":"","example":"","exampleCn":"","note":""},{"id":338,"source":"課本附錄單字總表","category":"ㅂ","korean":"빗","chinese":"梳子","pos":"名詞/其他","papago":"빗","hint":"","example":"","exampleCn":"","note":""},{"id":339,"source":"課本附錄單字總表","category":"ㅂ","korean":"빛","chinese":"光","pos":"名詞/其他","papago":"빛","hint":"","example":"","exampleCn":"","note":""},{"id":340,"source":"課本附錄單字總表","category":"ㅂ","korean":"빵","chinese":"麵包","pos":"名詞/其他","papago":"빵","hint":"","example":"","exampleCn":"","note":""},{"id":341,"source":"課本附錄單字總表","category":"ㅂ","korean":"빵집","chinese":"麵包店","pos":"名詞/其他","papago":"빵집","hint":"","example":"","exampleCn":"","note":""},{"id":342,"source":"課本附錄單字總表","category":"ㅂ","korean":"뿌리","chinese":"樹根","pos":"名詞/其他","papago":"뿌리","hint":"","example":"","exampleCn":"","note":""},{"id":343,"source":"課本附錄單字總表","category":"ㅂ","korean":"뼈","chinese":"骨頭","pos":"名詞/其他","papago":"뼈","hint":"","example":"","exampleCn":"","note":""},{"id":344,"source":"課本附錄單字總表","category":"ㅅ","korean":"사","chinese":"四","pos":"名詞/其他","papago":"사","hint":"","example":"","exampleCn":"","note":""},{"id":345,"source":"課本附錄單字總表","category":"ㅅ","korean":"사과","chinese":"蘋果","pos":"名詞/其他","papago":"사과","hint":"","example":"","exampleCn":"","note":""},{"id":346,"source":"課本附錄單字總表","category":"ㅅ","korean":"사다","chinese":"買","pos":"動詞/片語","papago":"사다","hint":"","example":"","exampleCn":"","note":""},{"id":347,"source":"課本附錄單字總表","category":"ㅅ","korean":"사랑하다","chinese":"愛","pos":"動詞/片語","papago":"사랑하다","hint":"","example":"","exampleCn":"","note":""},{"id":348,"source":"課本附錄單字總表","category":"ㅅ","korean":"사전","chinese":"辭典、字典","pos":"名詞/其他","papago":"사전","hint":"","example":"","exampleCn":"","note":""},{"id":349,"source":"課本附錄單字總表","category":"ㅅ","korean":"사진","chinese":"照片","pos":"名詞/其他","papago":"사진","hint":"","example":"","exampleCn":"","note":""},{"id":350,"source":"課本附錄單字總表","category":"ㅅ","korean":"사진을 찍다","chinese":"拍照","pos":"動詞/片語","papago":"사진을 찍다","hint":"","example":"","exampleCn":"","note":""},{"id":351,"source":"課本附錄單字總表","category":"ㅅ","korean":"산책을 하다","chinese":"散步","pos":"動詞/片語","papago":"산책을 하다","hint":"","example":"","exampleCn":"","note":""},{"id":352,"source":"課本附錄單字總表","category":"ㅅ","korean":"삼","chinese":"三","pos":"名詞/其他","papago":"삼","hint":"","example":"","exampleCn":"","note":""},{"id":353,"source":"課本附錄單字總表","category":"ㅅ","korean":"삼계탕","chinese":"蔘雞湯","pos":"名詞/其他","papago":"삼계탕","hint":"","example":"","exampleCn":"","note":""},{"id":354,"source":"課本附錄單字總表","category":"ㅅ","korean":"새","chinese":"鳥","pos":"名詞/其他","papago":"새","hint":"","example":"","exampleCn":"","note":""},{"id":355,"source":"課本附錄單字總表","category":"ㅅ","korean":"샌드위치","chinese":"三明治","pos":"名詞/其他","papago":"샌드위치","hint":"","example":"","exampleCn":"","note":""},{"id":356,"source":"課本附錄單字總表","category":"ㅅ","korean":"생선","chinese":"魚（類）","pos":"名詞/其他","papago":"생선","hint":"","example":"","exampleCn":"","note":""},{"id":357,"source":"課本附錄單字總表","category":"ㅅ","korean":"생일","chinese":"生日","pos":"名詞/其他","papago":"생일","hint":"","example":"","exampleCn":"","note":""},{"id":358,"source":"課本附錄單字總表","category":"ㅅ","korean":"생활","chinese":"生活","pos":"名詞/其他","papago":"생활","hint":"","example":"","exampleCn":"","note":""},{"id":359,"source":"課本附錄單字總表","category":"ㅅ","korean":"서예","chinese":"書法","pos":"名詞/其他","papago":"서예","hint":"","example":"","exampleCn":"","note":""},{"id":360,"source":"課本附錄單字總表","category":"ㅅ","korean":"서울","chinese":"首爾","pos":"名詞/其他","papago":"서울","hint":"","example":"","exampleCn":"","note":""},{"id":361,"source":"課本附錄單字總表","category":"ㅅ","korean":"서울대학교","chinese":"首爾大學","pos":"名詞/其他","papago":"서울대학교","hint":"","example":"","exampleCn":"","note":""},{"id":362,"source":"課本附錄單字總表","category":"ㅅ","korean":"서점","chinese":"書店","pos":"名詞/其他","papago":"서점","hint":"","example":"","exampleCn":"","note":""},{"id":363,"source":"課本附錄單字總表","category":"ㅅ","korean":"선글라스","chinese":"墨鏡","pos":"名詞/其他","papago":"선글라스","hint":"","example":"","exampleCn":"","note":""},{"id":364,"source":"課本附錄單字總表","category":"ㅅ","korean":"선물","chinese":"禮物","pos":"名詞/其他","papago":"선물","hint":"","example":"","exampleCn":"","note":""},{"id":365,"source":"課本附錄單字總表","category":"ㅅ","korean":"선생님","chinese":"老師","pos":"名詞/其他","papago":"선생님","hint":"","example":"","exampleCn":"","note":""},{"id":366,"source":"課本附錄單字總表","category":"ㅅ","korean":"선을 보다","chinese":"相親","pos":"動詞/片語","papago":"선을 보다","hint":"","example":"","exampleCn":"","note":""},{"id":367,"source":"課本附錄單字總表","category":"ㅅ","korean":"설날","chinese":"春節","pos":"名詞/其他","papago":"설날","hint":"","example":"","exampleCn":"","note":""},{"id":368,"source":"課本附錄單字總表","category":"ㅅ","korean":"세배를 하다","chinese":"拜年","pos":"動詞/片語","papago":"세배를 하다","hint":"","example":"","exampleCn":"","note":""},{"id":369,"source":"課本附錄單字總表","category":"ㅅ","korean":"세수","chinese":"洗臉","pos":"名詞/其他","papago":"세수","hint":"","example":"","exampleCn":"","note":""},{"id":370,"source":"課本附錄單字總表","category":"ㅅ","korean":"세수하다","chinese":"洗臉","pos":"動詞/片語","papago":"세수하다","hint":"","example":"","exampleCn":"","note":""},{"id":371,"source":"課本附錄單字總表","category":"ㅅ","korean":"셋","chinese":"三","pos":"名詞/其他","papago":"셋","hint":"","example":"","exampleCn":"","note":""},{"id":372,"source":"課本附錄單字總表","category":"ㅅ","korean":"소","chinese":"牛","pos":"名詞/其他","papago":"소","hint":"","example":"","exampleCn":"","note":""},{"id":373,"source":"課本附錄單字總表","category":"ㅅ","korean":"소개팅","chinese":"一對一聯誼","pos":"名詞/其他","papago":"소개팅","hint":"","example":"","exampleCn":"","note":""},{"id":374,"source":"課本附錄單字總表","category":"ㅅ","korean":"소개하다","chinese":"介紹","pos":"動詞/片語","papago":"소개하다","hint":"","example":"","exampleCn":"","note":""},{"id":375,"source":"課本附錄單字總表","category":"ㅅ","korean":"송편","chinese":"松糕","pos":"名詞/其他","papago":"송편","hint":"","example":"","exampleCn":"","note":""},{"id":376,"source":"課本附錄單字總表","category":"ㅅ","korean":"쇠고기","chinese":"牛肉","pos":"名詞/其他","papago":"쇠고기","hint":"","example":"","exampleCn":"","note":""},{"id":377,"source":"課本附錄單字總表","category":"ㅅ","korean":"쇼핑하다","chinese":"購物","pos":"動詞/片語","papago":"쇼핑하다","hint":"","example":"","exampleCn":"","note":""},{"id":378,"source":"課本附錄單字總表","category":"ㅅ","korean":"수박","chinese":"西瓜","pos":"名詞/其他","papago":"수박","hint":"","example":"","exampleCn":"","note":""},{"id":379,"source":"課本附錄單字總表","category":"ㅅ","korean":"수업","chinese":"課堂","pos":"名詞/其他","papago":"수업","hint":"","example":"","exampleCn":"","note":""},{"id":380,"source":"課本附錄單字總表","category":"ㅅ","korean":"수영장","chinese":"游泳池","pos":"名詞/其他","papago":"수영장","hint":"","example":"","exampleCn":"","note":""},{"id":381,"source":"課本附錄單字總表","category":"ㅅ","korean":"수영하다","chinese":"游泳","pos":"動詞/片語","papago":"수영하다","hint":"","example":"","exampleCn":"","note":""},{"id":382,"source":"課本附錄單字總表","category":"ㅅ","korean":"수요일","chinese":"星期三","pos":"名詞/其他","papago":"수요일","hint":"","example":"","exampleCn":"","note":""},{"id":383,"source":"課本附錄單字總表","category":"ㅅ","korean":"숙제를 하다","chinese":"寫作業","pos":"動詞/片語","papago":"숙제를 하다","hint":"","example":"","exampleCn":"","note":""},{"id":384,"source":"課本附錄單字總表","category":"ㅅ","korean":"숲","chinese":"森林","pos":"名詞/其他","papago":"숲","hint":"","example":"","exampleCn":"","note":""},{"id":385,"source":"課本附錄單字總表","category":"ㅅ","korean":"쉬는 시간","chinese":"休息時間","pos":"名詞/其他","papago":"쉬는 시간","hint":"","example":"","exampleCn":"","note":""},{"id":386,"source":"課本附錄單字總表","category":"ㅅ","korean":"쉬다","chinese":"休息","pos":"動詞/片語","papago":"쉬다","hint":"","example":"","exampleCn":"","note":""},{"id":387,"source":"課本附錄單字總表","category":"ㅅ","korean":"쉽다","chinese":"簡單的","pos":"名詞/其他","papago":"쉽다","hint":"","example":"","exampleCn":"","note":""},{"id":388,"source":"課本附錄單字總表","category":"ㅅ","korean":"스웨터","chinese":"毛衣","pos":"名詞/其他","papago":"스웨터","hint":"","example":"","exampleCn":"","note":""},{"id":389,"source":"課本附錄單字總表","category":"ㅅ","korean":"스케이트를 타다","chinese":"溜冰","pos":"動詞/片語","papago":"스케이트를 타다","hint":"","example":"","exampleCn":"","note":""},{"id":390,"source":"課本附錄單字總表","category":"ㅅ","korean":"스케줄","chinese":"行程","pos":"名詞/其他","papago":"스케줄","hint":"","example":"","exampleCn":"","note":""},{"id":391,"source":"課本附錄單字總表","category":"ㅅ","korean":"스키를 타다","chinese":"滑雪","pos":"動詞/片語","papago":"스키를 타다","hint":"","example":"","exampleCn":"","note":""},{"id":392,"source":"課本附錄單字總表","category":"ㅅ","korean":"스키장","chinese":"滑雪場","pos":"名詞/其他","papago":"스키장","hint":"","example":"","exampleCn":"","note":""},{"id":393,"source":"課本附錄單字總表","category":"ㅅ","korean":"스파게티","chinese":"義大利麵","pos":"名詞/其他","papago":"스파게티","hint":"","example":"","exampleCn":"","note":""},{"id":394,"source":"課本附錄單字總表","category":"ㅅ","korean":"스포츠 센터","chinese":"運動中心","pos":"名詞/其他","papago":"스포츠 센터","hint":"","example":"","exampleCn":"","note":""},{"id":395,"source":"課本附錄單字總表","category":"ㅅ","korean":"슬리퍼","chinese":"拖鞋","pos":"名詞/其他","papago":"슬리퍼","hint":"","example":"","exampleCn":"","note":""},{"id":396,"source":"課本附錄單字總表","category":"ㅅ","korean":"시간","chinese":"時間","pos":"名詞/其他","papago":"시간","hint":"","example":"","exampleCn":"","note":""},{"id":397,"source":"課本附錄單字總表","category":"ㅅ","korean":"시계","chinese":"時鐘","pos":"名詞/其他","papago":"시계","hint":"","example":"","exampleCn":"","note":""},{"id":398,"source":"課本附錄單字總表","category":"ㅅ","korean":"시내","chinese":"市區","pos":"名詞/其他","papago":"시내","hint":"","example":"","exampleCn":"","note":""},{"id":399,"source":"課本附錄單字總表","category":"ㅅ","korean":"시원하다","chinese":"涼爽的","pos":"動詞/片語","papago":"시원하다","hint":"","example":"","exampleCn":"","note":""},{"id":400,"source":"課本附錄單字總表","category":"ㅅ","korean":"시장","chinese":"市場","pos":"名詞/其他","papago":"시장","hint":"","example":"","exampleCn":"","note":""},{"id":401,"source":"課本附錄單字總表","category":"ㅅ","korean":"시청","chinese":"市政府","pos":"名詞/其他","papago":"시청","hint":"","example":"","exampleCn":"","note":""},{"id":402,"source":"課本附錄單字總表","category":"ㅅ","korean":"시험","chinese":"考試","pos":"名詞/其他","papago":"시험","hint":"","example":"","exampleCn":"","note":""},{"id":403,"source":"課本附錄單字總表","category":"ㅅ","korean":"식당","chinese":"餐廳","pos":"名詞/其他","papago":"식당","hint":"","example":"","exampleCn":"","note":""},{"id":404,"source":"課本附錄單字總表","category":"ㅅ","korean":"식혜","chinese":"甜米水","pos":"名詞/其他","papago":"식혜","hint":"","example":"","exampleCn":"","note":""},{"id":405,"source":"課本附錄單字總表","category":"ㅅ","korean":"신문","chinese":"報紙","pos":"名詞/其他","papago":"신문","hint":"","example":"","exampleCn":"","note":""},{"id":406,"source":"課本附錄單字總表","category":"ㅅ","korean":"심심하다","chinese":"無聊的","pos":"動詞/片語","papago":"심심하다","hint":"","example":"","exampleCn":"","note":""},{"id":407,"source":"課本附錄單字總表","category":"ㅅ","korean":"십","chinese":"十","pos":"名詞/其他","papago":"십","hint":"","example":"","exampleCn":"","note":""},{"id":408,"source":"課本附錄單字總表","category":"ㅅ","korean":"십 원","chinese":"十元","pos":"名詞/其他","papago":"십 원","hint":"","example":"","exampleCn":"","note":""},{"id":409,"source":"課本附錄單字總表","category":"ㅅ","korean":"싱가포르","chinese":"新加坡","pos":"名詞/其他","papago":"싱가포르","hint":"","example":"","exampleCn":"","note":""},{"id":410,"source":"課本附錄單字總表","category":"ㅅ","korean":"싸다","chinese":"便宜的","pos":"名詞/其他","papago":"싸다","hint":"","example":"","exampleCn":"","note":""},{"id":411,"source":"課本附錄單字總表","category":"ㅅ","korean":"씨","chinese":"先生、太太、小姐","pos":"名詞/其他","papago":"씨","hint":"","example":"","exampleCn":"","note":""},{"id":412,"source":"課本附錄單字總表","category":"ㅅ","korean":"쓰다","chinese":"寫","pos":"動詞/片語","papago":"쓰다","hint":"","example":"","exampleCn":"","note":""},{"id":413,"source":"課本附錄單字總表","category":"ㅇ","korean":"아기","chinese":"嬰兒","pos":"名詞/其他","papago":"아기","hint":"","example":"","exampleCn":"","note":""},{"id":414,"source":"課本附錄單字總表","category":"ㅇ","korean":"아니요","chinese":"不、不是的","pos":"名詞/其他","papago":"아니요","hint":"","example":"","exampleCn":"","note":""},{"id":415,"source":"課本附錄單字總表","category":"ㅇ","korean":"아래","chinese":"下面","pos":"名詞/其他","papago":"아래","hint":"","example":"","exampleCn":"","note":""},{"id":416,"source":"課本附錄單字總表","category":"ㅇ","korean":"아르바이트하다","chinese":"打工","pos":"動詞/片語","papago":"아르바이트하다","hint":"","example":"","exampleCn":"","note":""},{"id":417,"source":"課本附錄單字總表","category":"ㅇ","korean":"아리랑","chinese":"阿里郎","pos":"名詞/其他","papago":"아리랑","hint":"","example":"","exampleCn":"","note":""},{"id":418,"source":"課本附錄單字總表","category":"ㅇ","korean":"아버지","chinese":"爸爸","pos":"名詞/其他","papago":"아버지","hint":"","example":"","exampleCn":"","note":""},{"id":419,"source":"課本附錄單字總表","category":"ㅇ","korean":"아빠","chinese":"爸爸","pos":"名詞/其他","papago":"아빠","hint":"","example":"","exampleCn":"","note":""},{"id":420,"source":"課本附錄單字總表","category":"ㅇ","korean":"아이","chinese":"小孩","pos":"名詞/其他","papago":"아이","hint":"","example":"","exampleCn":"","note":""},{"id":421,"source":"課本附錄單字總表","category":"ㅇ","korean":"아이스커피","chinese":"冰咖啡","pos":"名詞/其他","papago":"아이스커피","hint":"","example":"","exampleCn":"","note":""},{"id":422,"source":"課本附錄單字總表","category":"ㅇ","korean":"아이스크림","chinese":"冰淇淋","pos":"名詞/其他","papago":"아이스크림","hint":"","example":"","exampleCn":"","note":""},{"id":423,"source":"課本附錄單字總表","category":"ㅇ","korean":"아우","chinese":"弟弟","pos":"名詞/其他","papago":"아우","hint":"","example":"","exampleCn":"","note":""},{"id":424,"source":"課本附錄單字總表","category":"ㅇ","korean":"아저씨","chinese":"大叔","pos":"名詞/其他","papago":"아저씨","hint":"","example":"","exampleCn":"","note":""},{"id":425,"source":"課本附錄單字總表","category":"ㅇ","korean":"아주","chinese":"很、非常","pos":"名詞/其他","papago":"아주","hint":"","example":"","exampleCn":"","note":""},{"id":426,"source":"課本附錄單字總表","category":"ㅇ","korean":"아홉","chinese":"九","pos":"名詞/其他","papago":"아홉","hint":"","example":"","exampleCn":"","note":""},{"id":427,"source":"課本附錄單字總表","category":"ㅇ","korean":"안","chinese":"裡面","pos":"名詞/其他","papago":"안","hint":"","example":"","exampleCn":"","note":""},{"id":428,"source":"課本附錄單字總表","category":"ㅇ","korean":"안경","chinese":"眼鏡","pos":"名詞/其他","papago":"안경","hint":"","example":"","exampleCn":"","note":""},{"id":429,"source":"課本附錄單字總表","category":"ㅇ","korean":"안녕하세요","chinese":"您好嗎？","pos":"名詞/其他","papago":"안녕하세요","hint":"","example":"","exampleCn":"","note":""},{"id":430,"source":"課本附錄單字總表","category":"ㅇ","korean":"안녕하십니까","chinese":"您好嗎？（正式場合）","pos":"名詞/其他","papago":"안녕하십니까","hint":"","example":"","exampleCn":"","note":""},{"id":431,"source":"課本附錄單字總表","category":"ㅇ","korean":"안녕히 가세요","chinese":"再見","pos":"名詞/其他","papago":"안녕히 가세요","hint":"","example":"","exampleCn":"","note":""},{"id":432,"source":"課本附錄單字總表","category":"ㅇ","korean":"안녕히 계세요","chinese":"再見","pos":"名詞/其他","papago":"안녕히 계세요","hint":"","example":"","exampleCn":"","note":""},{"id":433,"source":"課本附錄單字總表","category":"ㅇ","korean":"앉다","chinese":"坐","pos":"名詞/其他","papago":"앉다","hint":"","example":"","exampleCn":"","note":""},{"id":434,"source":"課本附錄單字總表","category":"ㅇ","korean":"알다","chinese":"知道","pos":"動詞/片語","papago":"알다","hint":"","example":"","exampleCn":"","note":""},{"id":435,"source":"課本附錄單字總表","category":"ㅇ","korean":"앞","chinese":"前面","pos":"名詞/其他","papago":"앞","hint":"","example":"","exampleCn":"","note":""},{"id":436,"source":"課本附錄單字總表","category":"ㅇ","korean":"야구","chinese":"棒球","pos":"名詞/其他","papago":"야구","hint":"","example":"","exampleCn":"","note":""},{"id":437,"source":"課本附錄單字總表","category":"ㅇ","korean":"야자수","chinese":"椰子樹","pos":"名詞/其他","papago":"야자수","hint":"","example":"","exampleCn":"","note":""},{"id":438,"source":"課本附錄單字總表","category":"ㅇ","korean":"약국","chinese":"藥局","pos":"名詞/其他","papago":"약국","hint":"","example":"","exampleCn":"","note":""},{"id":439,"source":"課本附錄單字總表","category":"ㅇ","korean":"약속","chinese":"約定","pos":"名詞/其他","papago":"약속","hint":"","example":"","exampleCn":"","note":""},{"id":440,"source":"課本附錄單字總表","category":"ㅇ","korean":"양력","chinese":"國曆（陽曆）","pos":"名詞/其他","papago":"양력","hint":"","example":"","exampleCn":"","note":""},{"id":441,"source":"課本附錄單字總表","category":"ㅇ","korean":"얘기","chinese":"聊天","pos":"名詞/其他","papago":"얘기","hint":"","example":"","exampleCn":"","note":""},{"id":442,"source":"課本附錄單字總表","category":"ㅇ","korean":"어느","chinese":"哪個","pos":"名詞/其他","papago":"어느","hint":"","example":"","exampleCn":"","note":""},{"id":443,"source":"課本附錄單字總表","category":"ㅇ","korean":"어디","chinese":"哪裡","pos":"名詞/其他","papago":"어디","hint":"","example":"","exampleCn":"","note":""},{"id":444,"source":"課本附錄單字總表","category":"ㅇ","korean":"어때요?","chinese":"怎麼樣呢？","pos":"名詞/其他","papago":"어때요?","hint":"","example":"","exampleCn":"","note":""},{"id":445,"source":"課本附錄單字總表","category":"ㅇ","korean":"어떻게","chinese":"怎樣地、如何地","pos":"名詞/其他","papago":"어떻게","hint":"","example":"","exampleCn":"","note":""},{"id":446,"source":"課本附錄單字總表","category":"ㅇ","korean":"어떻다","chinese":"怎樣的、如何的","pos":"名詞/其他","papago":"어떻다","hint":"","example":"","exampleCn":"","note":""},{"id":447,"source":"課本附錄單字總表","category":"ㅇ","korean":"어렵다","chinese":"難的","pos":"名詞/其他","papago":"어렵다","hint":"","example":"","exampleCn":"","note":""},{"id":448,"source":"課本附錄單字總表","category":"ㅇ","korean":"어머니","chinese":"媽媽","pos":"名詞/其他","papago":"어머니","hint":"","example":"","exampleCn":"","note":""},{"id":449,"source":"課本附錄單字總表","category":"ㅇ","korean":"어서 오세요","chinese":"歡迎光臨","pos":"名詞/其他","papago":"어서 오세요","hint":"","example":"","exampleCn":"","note":""},{"id":450,"source":"課本附錄單字總表","category":"ㅇ","korean":"어제","chinese":"昨天","pos":"名詞/其他","papago":"어제","hint":"","example":"","exampleCn":"","note":""},{"id":451,"source":"課本附錄單字總表","category":"ㅇ","korean":"언어교육원","chinese":"語言教育院","pos":"名詞/其他","papago":"언어교육원","hint":"","example":"","exampleCn":"","note":""},{"id":452,"source":"課本附錄單字總表","category":"ㅇ","korean":"언제","chinese":"何時","pos":"名詞/其他","papago":"언제","hint":"","example":"","exampleCn":"","note":""},{"id":453,"source":"課本附錄單字總表","category":"ㅇ","korean":"엄마","chinese":"媽媽","pos":"名詞/其他","papago":"엄마","hint":"","example":"","exampleCn":"","note":""},{"id":454,"source":"課本附錄單字總表","category":"ㅇ","korean":"얼마","chinese":"多少錢","pos":"名詞/其他","papago":"얼마","hint":"","example":"","exampleCn":"","note":""},{"id":455,"source":"課本附錄單字總表","category":"ㅇ","korean":"에","chinese":"表示「基點」","pos":"名詞/其他","papago":"에","hint":"","example":"","exampleCn":"","note":""},{"id":456,"source":"課本附錄單字總表","category":"ㅇ","korean":"에서","chinese":"從","pos":"名詞/其他","papago":"에서","hint":"","example":"","exampleCn":"","note":""},{"id":457,"source":"課本附錄單字總表","category":"ㅇ","korean":"에스프레소","chinese":"濃縮咖啡","pos":"名詞/其他","papago":"에스프레소","hint":"","example":"","exampleCn":"","note":""},{"id":458,"source":"課本附錄單字總表","category":"ㅇ","korean":"에어컨","chinese":"冷氣","pos":"名詞/其他","papago":"에어컨","hint":"","example":"","exampleCn":"","note":""},{"id":459,"source":"課本附錄單字總表","category":"ㅇ","korean":"여기 있어요","chinese":"在這裡","pos":"名詞/其他","papago":"여기 있어요","hint":"","example":"","exampleCn":"","note":""},{"id":460,"source":"課本附錄單字總表","category":"ㅇ","korean":"여기요","chinese":"不好意思（引起注意時）","pos":"名詞/其他","papago":"여기요","hint":"","example":"","exampleCn":"","note":""},{"id":461,"source":"課本附錄單字總表","category":"ㅇ","korean":"여덟","chinese":"八","pos":"名詞/其他","papago":"여덟","hint":"","example":"","exampleCn":"","note":""},{"id":462,"source":"課本附錄單字總表","category":"ㅇ","korean":"여러분","chinese":"各位","pos":"名詞/其他","papago":"여러분","hint":"","example":"","exampleCn":"","note":""},{"id":463,"source":"課本附錄單字總表","category":"ㅇ","korean":"여름","chinese":"夏天","pos":"名詞/其他","papago":"여름","hint":"","example":"","exampleCn":"","note":""},{"id":464,"source":"課本附錄單字總表","category":"ㅇ","korean":"여섯","chinese":"六","pos":"名詞/其他","papago":"여섯","hint":"","example":"","exampleCn":"","note":""},{"id":465,"source":"課本附錄單字總表","category":"ㅇ","korean":"여의도","chinese":"汝矣島","pos":"名詞/其他","papago":"여의도","hint":"","example":"","exampleCn":"","note":""},{"id":466,"source":"課本附錄單字總表","category":"ㅇ","korean":"여자","chinese":"女人","pos":"名詞/其他","papago":"여자","hint":"","example":"","exampleCn":"","note":""},{"id":467,"source":"課本附錄單字總表","category":"ㅇ","korean":"여자 친구","chinese":"女朋友","pos":"名詞/其他","papago":"여자 친구","hint":"","example":"","exampleCn":"","note":""},{"id":468,"source":"課本附錄單字總表","category":"ㅇ","korean":"여행을 하다","chinese":"旅行","pos":"動詞/片語","papago":"여행을 하다","hint":"","example":"","exampleCn":"","note":""},{"id":469,"source":"課本附錄單字總表","category":"ㅇ","korean":"연극","chinese":"話劇","pos":"名詞/其他","papago":"연극","hint":"","example":"","exampleCn":"","note":""},{"id":470,"source":"課本附錄單字總表","category":"ㅇ","korean":"연필","chinese":"鉛筆","pos":"名詞/其他","papago":"연필","hint":"","example":"","exampleCn":"","note":""},{"id":471,"source":"課本附錄單字總表","category":"ㅇ","korean":"열","chinese":"十","pos":"名詞/其他","papago":"열","hint":"","example":"","exampleCn":"","note":""},{"id":472,"source":"課本附錄單字總表","category":"ㅇ","korean":"영국","chinese":"英國","pos":"名詞/其他","papago":"영국","hint":"","example":"","exampleCn":"","note":""},{"id":473,"source":"課本附錄單字總表","category":"ㅇ","korean":"영국 사람","chinese":"英國人","pos":"名詞/其他","papago":"영국 사람","hint":"","example":"","exampleCn":"","note":""},{"id":474,"source":"課本附錄單字總表","category":"ㅇ","korean":"영어","chinese":"英語","pos":"名詞/其他","papago":"영어","hint":"","example":"","exampleCn":"","note":""},{"id":475,"source":"課本附錄單字總表","category":"ㅇ","korean":"영화","chinese":"電影","pos":"名詞/其他","papago":"영화","hint":"","example":"","exampleCn":"","note":""},{"id":476,"source":"課本附錄單字總表","category":"ㅇ","korean":"영화를 보다","chinese":"看電影","pos":"動詞/片語","papago":"영화를 보다","hint":"","example":"","exampleCn":"","note":""},{"id":477,"source":"課本附錄單字總表","category":"ㅇ","korean":"옆","chinese":"旁邊","pos":"名詞/其他","papago":"옆","hint":"","example":"","exampleCn":"","note":""},{"id":478,"source":"課本附錄單字總表","category":"ㅇ","korean":"예쁘다","chinese":"漂亮的","pos":"名詞/其他","papago":"예쁘다","hint":"","example":"","exampleCn":"","note":""},{"id":479,"source":"課本附錄單字總表","category":"ㅇ","korean":"오","chinese":"五","pos":"名詞/其他","papago":"오","hint":"","example":"","exampleCn":"","note":""},{"id":480,"source":"課本附錄單字總表","category":"ㅇ","korean":"오늘","chinese":"今天","pos":"名詞/其他","papago":"오늘","hint":"","example":"","exampleCn":"","note":""},{"id":481,"source":"課本附錄單字總表","category":"ㅇ","korean":"오렌지","chinese":"柳橙","pos":"名詞/其他","papago":"오렌지","hint":"","example":"","exampleCn":"","note":""},{"id":482,"source":"課本附錄單字總表","category":"ㅇ","korean":"오백 원","chinese":"五百元","pos":"名詞/其他","papago":"오백 원","hint":"","example":"","exampleCn":"","note":""},{"id":483,"source":"課本附錄單字總表","category":"ㅇ","korean":"오십 원","chinese":"五十元","pos":"名詞/其他","papago":"오십 원","hint":"","example":"","exampleCn":"","note":""},{"id":484,"source":"課本附錄單字總表","category":"ㅇ","korean":"오이","chinese":"小黃瓜","pos":"名詞/其他","papago":"오이","hint":"","example":"","exampleCn":"","note":""},{"id":485,"source":"課本附錄單字總表","category":"ㅇ","korean":"오이김치","chinese":"小黃瓜泡菜","pos":"名詞/其他","papago":"오이김치","hint":"","example":"","exampleCn":"","note":""},{"id":486,"source":"課本附錄單字總表","category":"ㅇ","korean":"오천 원","chinese":"五千元","pos":"名詞/其他","papago":"오천 원","hint":"","example":"","exampleCn":"","note":""},{"id":487,"source":"課本附錄單字總表","category":"ㅇ","korean":"오후","chinese":"下午","pos":"名詞/其他","papago":"오후","hint":"","example":"","exampleCn":"","note":""},{"id":488,"source":"課本附錄單字總表","category":"ㅇ","korean":"옷","chinese":"衣服","pos":"名詞/其他","papago":"옷","hint":"","example":"","exampleCn":"","note":""},{"id":489,"source":"課本附錄單字總表","category":"ㅇ","korean":"옷을 사다","chinese":"買衣服","pos":"動詞/片語","papago":"옷을 사다","hint":"","example":"","exampleCn":"","note":""},{"id":490,"source":"課本附錄單字總表","category":"ㅇ","korean":"와이셔츠","chinese":"襯衫","pos":"名詞/其他","papago":"와이셔츠","hint":"","example":"","exampleCn":"","note":""},{"id":491,"source":"課本附錄單字總表","category":"ㅇ","korean":"외우다","chinese":"背、記住","pos":"動詞/片語","papago":"외우다","hint":"","example":"","exampleCn":"","note":""},{"id":492,"source":"課本附錄單字總表","category":"ㅇ","korean":"왜","chinese":"為什麼","pos":"名詞/其他","papago":"왜","hint":"","example":"","exampleCn":"","note":""},{"id":493,"source":"課本附錄單字總表","category":"ㅇ","korean":"요가","chinese":"瑜伽","pos":"名詞/其他","papago":"요가","hint":"","example":"","exampleCn":"","note":""},{"id":494,"source":"課本附錄單字總表","category":"ㅇ","korean":"요리","chinese":"煮菜、料理","pos":"名詞/其他","papago":"요리","hint":"","example":"","exampleCn":"","note":""},{"id":495,"source":"課本附錄單字總表","category":"ㅇ","korean":"요리사","chinese":"廚師","pos":"名詞/其他","papago":"요리사","hint":"","example":"","exampleCn":"","note":""},{"id":496,"source":"課本附錄單字總表","category":"ㅇ","korean":"요즘","chinese":"最近","pos":"名詞/其他","papago":"요즘","hint":"","example":"","exampleCn":"","note":""},{"id":497,"source":"課本附錄單字總表","category":"ㅇ","korean":"우동","chinese":"烏龍麵","pos":"名詞/其他","papago":"우동","hint":"","example":"","exampleCn":"","note":""},{"id":498,"source":"課本附錄單字總表","category":"ㅇ","korean":"우리","chinese":"我們","pos":"名詞/其他","papago":"우리","hint":"","example":"","exampleCn":"","note":""},{"id":499,"source":"課本附錄單字總表","category":"ㅇ","korean":"우산","chinese":"雨傘","pos":"名詞/其他","papago":"우산","hint":"","example":"","exampleCn":"","note":""},{"id":500,"source":"課本附錄單字總表","category":"ㅇ","korean":"우유","chinese":"牛奶","pos":"名詞/其他","papago":"우유","hint":"","example":"","exampleCn":"","note":""},{"id":501,"source":"課本附錄單字總表","category":"ㅇ","korean":"우체국","chinese":"郵局","pos":"名詞/其他","papago":"우체국","hint":"","example":"","exampleCn":"","note":""},{"id":502,"source":"課本附錄單字總表","category":"ㅇ","korean":"우표","chinese":"郵票","pos":"名詞/其他","papago":"우표","hint":"","example":"","exampleCn":"","note":""},{"id":503,"source":"課本附錄單字總表","category":"ㅇ","korean":"운동장","chinese":"運動場","pos":"名詞/其他","papago":"운동장","hint":"","example":"","exampleCn":"","note":""},{"id":504,"source":"課本附錄單字總表","category":"ㅇ","korean":"운동하다","chinese":"運動","pos":"動詞/片語","papago":"운동하다","hint":"","example":"","exampleCn":"","note":""},{"id":505,"source":"課本附錄單字總表","category":"ㅇ","korean":"운동화","chinese":"運動鞋","pos":"名詞/其他","papago":"운동화","hint":"","example":"","exampleCn":"","note":""},{"id":506,"source":"課本附錄單字總表","category":"ㅇ","korean":"웃어른","chinese":"長輩","pos":"名詞/其他","papago":"웃어른","hint":"","example":"","exampleCn":"","note":""},{"id":507,"source":"課本附錄單字總表","category":"ㅇ","korean":"월요일","chinese":"星期一","pos":"名詞/其他","papago":"월요일","hint":"","example":"","exampleCn":"","note":""},{"id":508,"source":"課本附錄單字總表","category":"ㅇ","korean":"웨이터","chinese":"服務生","pos":"名詞/其他","papago":"웨이터","hint":"","example":"","exampleCn":"","note":""},{"id":509,"source":"課本附錄單字總表","category":"ㅇ","korean":"위","chinese":"上面","pos":"名詞/其他","papago":"위","hint":"","example":"","exampleCn":"","note":""},{"id":510,"source":"課本附錄單字總表","category":"ㅇ","korean":"유리","chinese":"玻璃","pos":"名詞/其他","papago":"유리","hint":"","example":"","exampleCn":"","note":""},{"id":511,"source":"課本附錄單字總表","category":"ㅇ","korean":"육","chinese":"六","pos":"名詞/其他","papago":"육","hint":"","example":"","exampleCn":"","note":""},{"id":512,"source":"課本附錄單字總表","category":"ㅇ","korean":"은행","chinese":"銀行","pos":"名詞/其他","papago":"은행","hint":"","example":"","exampleCn":"","note":""},{"id":513,"source":"課本附錄單字總表","category":"ㅇ","korean":"음력","chinese":"農曆（陰曆）","pos":"名詞/其他","papago":"음력","hint":"","example":"","exampleCn":"","note":""},{"id":514,"source":"課本附錄單字總表","category":"ㅇ","korean":"음식","chinese":"食物","pos":"名詞/其他","papago":"음식","hint":"","example":"","exampleCn":"","note":""},{"id":515,"source":"課本附錄單字總表","category":"ㅇ","korean":"음악","chinese":"音樂","pos":"名詞/其他","papago":"음악","hint":"","example":"","exampleCn":"","note":""},{"id":516,"source":"課本附錄單字總表","category":"ㅇ","korean":"의사","chinese":"醫生","pos":"名詞/其他","papago":"의사","hint":"","example":"","exampleCn":"","note":""},{"id":517,"source":"課本附錄單字總表","category":"ㅇ","korean":"의자","chinese":"椅子","pos":"名詞/其他","papago":"의자","hint":"","example":"","exampleCn":"","note":""},{"id":518,"source":"課本附錄單字總表","category":"ㅇ","korean":"이","chinese":"牙齒","pos":"名詞/其他","papago":"이","hint":"","example":"","exampleCn":"","note":""},{"id":519,"source":"課本附錄單字總表","category":"ㅇ","korean":"이","chinese":"一","pos":"名詞/其他","papago":"이","hint":"","example":"","exampleCn":"","note":""},{"id":520,"source":"課本附錄單字總表","category":"ㅇ","korean":"이","chinese":"二","pos":"名詞/其他","papago":"이","hint":"","example":"","exampleCn":"","note":""},{"id":521,"source":"課本附錄單字總表","category":"ㅇ","korean":"이런","chinese":"這種、這樣的","pos":"名詞/其他","papago":"이런","hint":"","example":"","exampleCn":"","note":""},{"id":522,"source":"課本附錄單字總表","category":"ㅇ","korean":"이를 닦다","chinese":"刷牙","pos":"動詞/片語","papago":"이를 닦다","hint":"","example":"","exampleCn":"","note":""},{"id":523,"source":"課本附錄單字總表","category":"ㅇ","korean":"이름","chinese":"名字","pos":"名詞/其他","papago":"이름","hint":"","example":"","exampleCn":"","note":""},{"id":524,"source":"課本附錄單字總表","category":"ㅇ","korean":"이야기","chinese":"聊天","pos":"名詞/其他","papago":"이야기","hint":"","example":"","exampleCn":"","note":""},{"id":525,"source":"課本附錄單字總表","category":"ㅇ","korean":"이야기하다","chinese":"聊天","pos":"動詞/片語","papago":"이야기하다","hint":"","example":"","exampleCn":"","note":""},{"id":526,"source":"課本附錄單字總表","category":"ㅇ","korean":"인도","chinese":"印度","pos":"名詞/其他","papago":"인도","hint":"","example":"","exampleCn":"","note":""},{"id":527,"source":"課本附錄單字總表","category":"ㅇ","korean":"인사동","chinese":"仁寺洞","pos":"名詞/其他","papago":"인사동","hint":"","example":"","exampleCn":"","note":""},{"id":528,"source":"課本附錄單字總表","category":"ㅇ","korean":"인치","chinese":"英寸","pos":"名詞/其他","papago":"인치","hint":"","example":"","exampleCn":"","note":""},{"id":529,"source":"課本附錄單字總表","category":"ㅇ","korean":"일","chinese":"一","pos":"名詞/其他","papago":"일","hint":"","example":"","exampleCn":"","note":""},{"id":530,"source":"課本附錄單字總表","category":"ㅇ","korean":"일곱","chinese":"七","pos":"名詞/其他","papago":"일곱","hint":"","example":"","exampleCn":"","note":""},{"id":531,"source":"課本附錄單字總表","category":"ㅇ","korean":"일본어","chinese":"日語","pos":"名詞/其他","papago":"일본어","hint":"","example":"","exampleCn":"","note":""},{"id":532,"source":"課本附錄單字總表","category":"ㅇ","korean":"일본","chinese":"日本","pos":"名詞/其他","papago":"일본","hint":"","example":"","exampleCn":"","note":""},{"id":533,"source":"課本附錄單字總表","category":"ㅇ","korean":"일본 사람","chinese":"日本人","pos":"名詞/其他","papago":"일본 사람","hint":"","example":"","exampleCn":"","note":""},{"id":534,"source":"課本附錄單字總表","category":"ㅇ","korean":"입","chinese":"嘴巴","pos":"名詞/其他","papago":"입","hint":"","example":"","exampleCn":"","note":""},{"id":535,"source":"課本附錄單字總表","category":"ㅇ","korean":"일요일","chinese":"星期日","pos":"名詞/其他","papago":"일요일","hint":"","example":"","exampleCn":"","note":""},{"id":536,"source":"課本附錄單字總表","category":"ㅇ","korean":"일하다","chinese":"工作","pos":"動詞/片語","papago":"일하다","hint":"","example":"","exampleCn":"","note":""},{"id":537,"source":"課本附錄單字總表","category":"ㅇ","korean":"읽다","chinese":"讀","pos":"動詞/片語","papago":"읽다","hint":"","example":"","exampleCn":"","note":""},{"id":538,"source":"課本附錄單字總表","category":"ㅈ","korean":"자","chinese":"尺","pos":"名詞/其他","papago":"자","hint":"","example":"","exampleCn":"","note":""},{"id":539,"source":"課本附錄單字總表","category":"ㅈ","korean":"자다","chinese":"睡覺","pos":"名詞/其他","papago":"자다","hint":"","example":"","exampleCn":"","note":""},{"id":540,"source":"課本附錄單字總表","category":"ㅈ","korean":"자전거를 타다","chinese":"騎腳踏車","pos":"動詞/片語","papago":"자전거를 타다","hint":"","example":"","exampleCn":"","note":""},{"id":541,"source":"課本附錄單字總表","category":"ㅈ","korean":"자주","chinese":"經常","pos":"名詞/其他","papago":"자주","hint":"","example":"","exampleCn":"","note":""},{"id":542,"source":"課本附錄單字總表","category":"ㅈ","korean":"작년","chinese":"去年","pos":"名詞/其他","papago":"작년","hint":"","example":"","exampleCn":"","note":""},{"id":543,"source":"課本附錄單字總表","category":"ㅈ","korean":"잘","chinese":"好好地","pos":"名詞/其他","papago":"잘","hint":"","example":"","exampleCn":"","note":""},{"id":544,"source":"課本附錄單字總表","category":"ㅈ","korean":"잘 지내다","chinese":"過得好","pos":"名詞/其他","papago":"잘 지내다","hint":"","example":"","exampleCn":"","note":""},{"id":545,"source":"課本附錄單字總表","category":"ㅈ","korean":"잠깐만","chinese":"等一下","pos":"名詞/其他","papago":"잠깐만","hint":"","example":"","exampleCn":"","note":""},{"id":546,"source":"課本附錄單字總表","category":"ㅈ","korean":"잡지","chinese":"雜誌","pos":"名詞/其他","papago":"잡지","hint":"","example":"","exampleCn":"","note":""},{"id":547,"source":"課本附錄單字總表","category":"ㅈ","korean":"재미없다","chinese":"無趣的、無聊的","pos":"名詞/其他","papago":"재미없다","hint":"","example":"","exampleCn":"","note":""},{"id":548,"source":"課本附錄單字總表","category":"ㅈ","korean":"재미있다","chinese":"有趣的","pos":"名詞/其他","papago":"재미있다","hint":"","example":"","exampleCn":"","note":""},{"id":549,"source":"課本附錄單字總表","category":"ㅈ","korean":"저","chinese":"我（謙卑語）","pos":"名詞/其他","papago":"저","hint":"","example":"","exampleCn":"","note":""},{"id":550,"source":"課本附錄單字總表","category":"ㅈ","korean":"저기","chinese":"那裡","pos":"名詞/其他","papago":"저기","hint":"","example":"","exampleCn":"","note":""},{"id":551,"source":"課本附錄單字總表","category":"ㅈ","korean":"전자사전","chinese":"電子辭典","pos":"名詞/其他","papago":"전자사전","hint":"","example":"","exampleCn":"","note":""},{"id":552,"source":"課本附錄單字總表","category":"ㅈ","korean":"전화번호","chinese":"電話號碼","pos":"名詞/其他","papago":"전화번호","hint":"","example":"","exampleCn":"","note":""},{"id":553,"source":"課本附錄單字總表","category":"ㅈ","korean":"전화하다","chinese":"打電話","pos":"動詞/片語","papago":"전화하다","hint":"","example":"","exampleCn":"","note":""},{"id":554,"source":"課本附錄單字總表","category":"ㅈ","korean":"점심","chinese":"午餐","pos":"名詞/其他","papago":"점심","hint":"","example":"","exampleCn":"","note":""},{"id":555,"source":"課本附錄單字總表","category":"ㅈ","korean":"정말","chinese":"真的","pos":"名詞/其他","papago":"정말","hint":"","example":"","exampleCn":"","note":""},{"id":556,"source":"課本附錄單字總表","category":"ㅈ","korean":"제","chinese":"我的（謙卑語）","pos":"名詞/其他","papago":"제","hint":"","example":"","exampleCn":"","note":""},{"id":557,"source":"課本附錄單字總表","category":"ㅈ","korean":"조금","chinese":"一點、稍微","pos":"名詞/其他","papago":"조금","hint":"","example":"","exampleCn":"","note":""},{"id":558,"source":"課本附錄單字總表","category":"ㅈ","korean":"조심해서 오세요","chinese":"來時路上小心","pos":"名詞/其他","papago":"조심해서 오세요","hint":"","example":"","exampleCn":"","note":""},{"id":559,"source":"課本附錄單字總表","category":"ㅈ","korean":"좀","chinese":"稍微","pos":"名詞/其他","papago":"좀","hint":"","example":"","exampleCn":"","note":""},{"id":560,"source":"課本附錄單字總表","category":"ㅈ","korean":"좋다","chinese":"好的","pos":"名詞/其他","papago":"좋다","hint":"","example":"","exampleCn":"","note":""},{"id":561,"source":"課本附錄單字總表","category":"ㅈ","korean":"좋아하다","chinese":"喜歡","pos":"動詞/片語","papago":"좋아하다","hint":"","example":"","exampleCn":"","note":""},{"id":562,"source":"課本附錄單字總表","category":"ㅈ","korean":"주다","chinese":"給","pos":"動詞/片語","papago":"주다","hint":"","example":"","exampleCn":"","note":""},{"id":563,"source":"課本附錄單字總表","category":"ㅈ","korean":"주말","chinese":"週末","pos":"名詞/其他","papago":"주말","hint":"","example":"","exampleCn":"","note":""},{"id":564,"source":"課本附錄單字總表","category":"ㅈ","korean":"주부","chinese":"家庭主婦","pos":"名詞/其他","papago":"주부","hint":"","example":"","exampleCn":"","note":""},{"id":565,"source":"課本附錄單字總表","category":"ㅈ","korean":"주스","chinese":"果汁","pos":"名詞/其他","papago":"주스","hint":"","example":"","exampleCn":"","note":""},{"id":566,"source":"課本附錄單字總表","category":"ㅈ","korean":"중국","chinese":"中國","pos":"名詞/其他","papago":"중국","hint":"","example":"","exampleCn":"","note":""},{"id":567,"source":"課本附錄單字總表","category":"ㅈ","korean":"중국 사람","chinese":"中國人","pos":"名詞/其他","papago":"중국 사람","hint":"","example":"","exampleCn":"","note":""},{"id":568,"source":"課本附錄單字總表","category":"ㅈ","korean":"줘요","chinese":"給","pos":"名詞/其他","papago":"줘요","hint":"","example":"","exampleCn":"","note":""},{"id":569,"source":"課本附錄單字總表","category":"ㅈ","korean":"쥐","chinese":"老鼠","pos":"名詞/其他","papago":"쥐","hint":"","example":"","exampleCn":"","note":""},{"id":570,"source":"課本附錄單字總表","category":"ㅈ","korean":"지갑","chinese":"錢包","pos":"名詞/其他","papago":"지갑","hint":"","example":"","exampleCn":"","note":""},{"id":571,"source":"課本附錄單字總表","category":"ㅈ","korean":"지금","chinese":"現在","pos":"名詞/其他","papago":"지금","hint":"","example":"","exampleCn":"","note":""},{"id":572,"source":"課本附錄單字總表","category":"ㅈ","korean":"지난주","chinese":"上週","pos":"名詞/其他","papago":"지난주","hint":"","example":"","exampleCn":"","note":""},{"id":573,"source":"課本附錄單字總表","category":"ㅈ","korean":"지도","chinese":"地圖","pos":"名詞/其他","papago":"지도","hint":"","example":"","exampleCn":"","note":""},{"id":574,"source":"課本附錄單字總表","category":"ㅈ","korean":"지우개","chinese":"橡皮擦","pos":"名詞/其他","papago":"지우개","hint":"","example":"","exampleCn":"","note":""},{"id":575,"source":"課本附錄單字總表","category":"ㅈ","korean":"지하","chinese":"地下","pos":"名詞/其他","papago":"지하","hint":"","example":"","exampleCn":"","note":""},{"id":576,"source":"課本附錄單字總表","category":"ㅈ","korean":"직업","chinese":"職業","pos":"名詞/其他","papago":"직업","hint":"","example":"","exampleCn":"","note":""},{"id":577,"source":"課本附錄單字總表","category":"ㅈ","korean":"집","chinese":"家","pos":"名詞/其他","papago":"집","hint":"","example":"","exampleCn":"","note":""},{"id":578,"source":"課本附錄單字總表","category":"ㅈ","korean":"짜다","chinese":"鹹的","pos":"名詞/其他","papago":"짜다","hint":"","example":"","exampleCn":"","note":""},{"id":579,"source":"課本附錄單字總表","category":"ㅈ","korean":"찌다","chinese":"蒸","pos":"名詞/其他","papago":"찌다","hint":"","example":"","exampleCn":"","note":""},{"id":580,"source":"課本附錄單字總表","category":"ㅈ","korean":"찜질방에 가다","chinese":"去汗蒸幕","pos":"動詞/片語","papago":"찜질방에 가다","hint":"","example":"","exampleCn":"","note":""},{"id":581,"source":"課本附錄單字總表","category":"ㅊ","korean":"차","chinese":"車子","pos":"名詞/其他","papago":"차","hint":"","example":"","exampleCn":"","note":""},{"id":582,"source":"課本附錄單字總表","category":"ㅊ","korean":"차","chinese":"茶","pos":"名詞/其他","papago":"차","hint":"","example":"","exampleCn":"","note":""},{"id":583,"source":"課本附錄單字總表","category":"ㅊ","korean":"차례를 지내다","chinese":"祭祖","pos":"動詞/片語","papago":"차례를 지내다","hint":"","example":"","exampleCn":"","note":""},{"id":584,"source":"課本附錄單字總表","category":"ㅊ","korean":"찻집","chinese":"茶館","pos":"名詞/其他","papago":"찻집","hint":"","example":"","exampleCn":"","note":""},{"id":585,"source":"課本附錄單字總表","category":"ㅊ","korean":"창문","chinese":"窗戶","pos":"名詞/其他","papago":"창문","hint":"","example":"","exampleCn":"","note":""},{"id":586,"source":"課本附錄單字總表","category":"ㅊ","korean":"책","chinese":"書","pos":"名詞/其他","papago":"책","hint":"","example":"","exampleCn":"","note":""},{"id":587,"source":"課本附錄單字總表","category":"ㅊ","korean":"책상","chinese":"書桌","pos":"名詞/其他","papago":"책상","hint":"","example":"","exampleCn":"","note":""},{"id":588,"source":"課本附錄單字總表","category":"ㅊ","korean":"책을 읽다","chinese":"看書","pos":"動詞/片語","papago":"책을 읽다","hint":"","example":"","exampleCn":"","note":""},{"id":589,"source":"課本附錄單字總表","category":"ㅊ","korean":"처음","chinese":"第一次","pos":"名詞/其他","papago":"처음","hint":"","example":"","exampleCn":"","note":""},{"id":590,"source":"課本附錄單字總表","category":"ㅊ","korean":"천 원","chinese":"一千元","pos":"名詞/其他","papago":"천 원","hint":"","example":"","exampleCn":"","note":""},{"id":591,"source":"課本附錄單字總表","category":"ㅊ","korean":"청계천","chinese":"清溪川","pos":"名詞/其他","papago":"청계천","hint":"","example":"","exampleCn":"","note":""},{"id":592,"source":"課本附錄單字總表","category":"ㅊ","korean":"추석","chinese":"中秋節","pos":"名詞/其他","papago":"추석","hint":"","example":"","exampleCn":"","note":""},{"id":593,"source":"課本附錄單字總表","category":"ㅊ","korean":"축구를 하다","chinese":"踢足球","pos":"動詞/片語","papago":"축구를 하다","hint":"","example":"","exampleCn":"","note":""},{"id":594,"source":"課本附錄單字總表","category":"ㅊ","korean":"춥다","chinese":"冷的","pos":"名詞/其他","papago":"춥다","hint":"","example":"","exampleCn":"","note":""},{"id":595,"source":"課本附錄單字總表","category":"ㅊ","korean":"추워요","chinese":"冷的","pos":"名詞/其他","papago":"추워요","hint":"","example":"","exampleCn":"","note":""},{"id":596,"source":"課本附錄單字總表","category":"ㅊ","korean":"치마","chinese":"裙子","pos":"名詞/其他","papago":"치마","hint":"","example":"","exampleCn":"","note":""},{"id":597,"source":"課本附錄單字總表","category":"ㅊ","korean":"친구","chinese":"朋友","pos":"名詞/其他","papago":"친구","hint":"","example":"","exampleCn":"","note":""},{"id":598,"source":"課本附錄單字總表","category":"ㅊ","korean":"친구를 만나다","chinese":"和朋友見面、找朋友","pos":"動詞/片語","papago":"친구를 만나다","hint":"","example":"","exampleCn":"","note":""},{"id":599,"source":"課本附錄單字總表","category":"ㅊ","korean":"칠","chinese":"七","pos":"名詞/其他","papago":"칠","hint":"","example":"","exampleCn":"","note":""},{"id":600,"source":"課本附錄單字總表","category":"ㅊ","korean":"침대","chinese":"床","pos":"名詞/其他","papago":"침대","hint":"","example":"","exampleCn":"","note":""},{"id":601,"source":"課本附錄單字總表","category":"ㅋ","korean":"카드","chinese":"卡片","pos":"名詞/其他","papago":"카드","hint":"","example":"","exampleCn":"","note":""},{"id":602,"source":"課本附錄單字總表","category":"ㅋ","korean":"카메라","chinese":"相機","pos":"名詞/其他","papago":"카메라","hint":"","example":"","exampleCn":"","note":""},{"id":603,"source":"課本附錄單字總表","category":"ㅋ","korean":"캐나다","chinese":"加拿大","pos":"名詞/其他","papago":"캐나다","hint":"","example":"","exampleCn":"","note":""},{"id":604,"source":"課本附錄單字總表","category":"ㅋ","korean":"커피","chinese":"咖啡","pos":"名詞/其他","papago":"커피","hint":"","example":"","exampleCn":"","note":""},{"id":605,"source":"課本附錄單字總表","category":"ㅋ","korean":"커피를 마시다","chinese":"喝咖啡","pos":"動詞/片語","papago":"커피를 마시다","hint":"","example":"","exampleCn":"","note":""},{"id":606,"source":"課本附錄單字總表","category":"ㅋ","korean":"커피숍","chinese":"咖啡廳","pos":"名詞/其他","papago":"커피숍","hint":"","example":"","exampleCn":"","note":""},{"id":607,"source":"課本附錄單字總表","category":"ㅋ","korean":"컴퓨터","chinese":"電腦","pos":"名詞/其他","papago":"컴퓨터","hint":"","example":"","exampleCn":"","note":""},{"id":608,"source":"課本附錄單字總表","category":"ㅋ","korean":"케이크","chinese":"蛋糕","pos":"名詞/其他","papago":"케이크","hint":"","example":"","exampleCn":"","note":""},{"id":609,"source":"課本附錄單字總表","category":"ㅋ","korean":"코","chinese":"鼻子","pos":"名詞/其他","papago":"코","hint":"","example":"","exampleCn":"","note":""},{"id":610,"source":"課本附錄單字總表","category":"ㅋ","korean":"코끼리","chinese":"大象","pos":"名詞/其他","papago":"코끼리","hint":"","example":"","exampleCn":"","note":""},{"id":611,"source":"課本附錄單字總表","category":"ㅋ","korean":"코엑스몰","chinese":"COEX購物中心","pos":"名詞/其他","papago":"코엑스몰","hint":"","example":"","exampleCn":"","note":""},{"id":612,"source":"課本附錄單字總表","category":"ㅋ","korean":"코트","chinese":"外套","pos":"名詞/其他","papago":"코트","hint":"","example":"","exampleCn":"","note":""},{"id":613,"source":"課本附錄單字總表","category":"ㅋ","korean":"콜라","chinese":"可樂","pos":"名詞/其他","papago":"콜라","hint":"","example":"","exampleCn":"","note":""},{"id":614,"source":"課本附錄單字總表","category":"ㅋ","korean":"크다","chinese":"大的","pos":"名詞/其他","papago":"크다","hint":"","example":"","exampleCn":"","note":""},{"id":615,"source":"課本附錄單字總表","category":"ㅋ","korean":"크리스마스","chinese":"聖誕節","pos":"名詞/其他","papago":"크리스마스","hint":"","example":"","exampleCn":"","note":""},{"id":616,"source":"課本附錄單字總表","category":"ㅋ","korean":"키","chinese":"身高","pos":"名詞/其他","papago":"키","hint":"","example":"","exampleCn":"","note":""},{"id":617,"source":"課本附錄單字總表","category":"ㅋ","korean":"키위","chinese":"奇異果","pos":"名詞/其他","papago":"키위","hint":"","example":"","exampleCn":"","note":""},{"id":618,"source":"課本附錄單字總表","category":"ㅌ","korean":"타다","chinese":"搭乘","pos":"動詞/片語","papago":"타다","hint":"","example":"","exampleCn":"","note":""},{"id":619,"source":"課本附錄單字總表","category":"ㅌ","korean":"타조","chinese":"鴕鳥","pos":"名詞/其他","papago":"타조","hint":"","example":"","exampleCn":"","note":""},{"id":620,"source":"課本附錄單字總表","category":"ㅌ","korean":"태국","chinese":"泰國","pos":"名詞/其他","papago":"태국","hint":"","example":"","exampleCn":"","note":""},{"id":621,"source":"課本附錄單字總表","category":"ㅌ","korean":"태권도를 배우다","chinese":"學跆拳道","pos":"動詞/片語","papago":"태권도를 배우다","hint":"","example":"","exampleCn":"","note":""},{"id":622,"source":"課本附錄單字總表","category":"ㅌ","korean":"테니스를 치다","chinese":"打網球","pos":"動詞/片語","papago":"테니스를 치다","hint":"","example":"","exampleCn":"","note":""},{"id":623,"source":"課本附錄單字總表","category":"ㅌ","korean":"텔레비전","chinese":"電視","pos":"名詞/其他","papago":"텔레비전","hint":"","example":"","exampleCn":"","note":""},{"id":624,"source":"課本附錄單字總表","category":"ㅌ","korean":"토마토","chinese":"番茄","pos":"名詞/其他","papago":"토마토","hint":"","example":"","exampleCn":"","note":""},{"id":625,"source":"課本附錄單字總表","category":"ㅌ","korean":"토요일","chinese":"星期六","pos":"名詞/其他","papago":"토요일","hint":"","example":"","exampleCn":"","note":""},{"id":626,"source":"課本附錄單字總表","category":"ㅌ","korean":"투우사","chinese":"鬥牛士","pos":"名詞/其他","papago":"투우사","hint":"","example":"","exampleCn":"","note":""},{"id":627,"source":"課本附錄單字總表","category":"ㅍ","korean":"파리","chinese":"蒼蠅","pos":"名詞/其他","papago":"파리","hint":"","example":"","exampleCn":"","note":""},{"id":628,"source":"課本附錄單字總表","category":"ㅍ","korean":"파리","chinese":"巴黎","pos":"名詞/其他","papago":"파리","hint":"","example":"","exampleCn":"","note":""},{"id":629,"source":"課本附錄單字總表","category":"ㅍ","korean":"파인애플","chinese":"鳳梨","pos":"名詞/其他","papago":"파인애플","hint":"","example":"","exampleCn":"","note":""},{"id":630,"source":"課本附錄單字總表","category":"ㅍ","korean":"파키스탄","chinese":"巴基斯坦","pos":"名詞/其他","papago":"파키스탄","hint":"","example":"","exampleCn":"","note":""},{"id":631,"source":"課本附錄單字總表","category":"ㅍ","korean":"파티","chinese":"派對","pos":"名詞/其他","papago":"파티","hint":"","example":"","exampleCn":"","note":""},{"id":632,"source":"課本附錄單字總表","category":"ㅍ","korean":"팔","chinese":"八","pos":"名詞/其他","papago":"팔","hint":"","example":"","exampleCn":"","note":""},{"id":633,"source":"課本附錄單字總表","category":"ㅍ","korean":"팔다","chinese":"賣","pos":"動詞/片語","papago":"팔다","hint":"","example":"","exampleCn":"","note":""},{"id":634,"source":"課本附錄單字總表","category":"ㅍ","korean":"포도","chinese":"葡萄","pos":"名詞/其他","papago":"포도","hint":"","example":"","exampleCn":"","note":""},{"id":635,"source":"課本附錄單字總表","category":"ㅍ","korean":"프랑스어","chinese":"法語","pos":"名詞/其他","papago":"프랑스어","hint":"","example":"","exampleCn":"","note":""},{"id":636,"source":"課本附錄單字總表","category":"ㅍ","korean":"프랑스","chinese":"法國","pos":"名詞/其他","papago":"프랑스","hint":"","example":"","exampleCn":"","note":""},{"id":637,"source":"課本附錄單字總表","category":"ㅍ","korean":"프랑스 사람","chinese":"法國人","pos":"名詞/其他","papago":"프랑스 사람","hint":"","example":"","exampleCn":"","note":""},{"id":638,"source":"課本附錄單字總表","category":"ㅍ","korean":"피곤하다","chinese":"疲倦的","pos":"動詞/片語","papago":"피곤하다","hint":"","example":"","exampleCn":"","note":""},{"id":639,"source":"課本附錄單字總表","category":"ㅍ","korean":"피아노를 치다","chinese":"彈鋼琴","pos":"動詞/片語","papago":"피아노를 치다","hint":"","example":"","exampleCn":"","note":""},{"id":640,"source":"課本附錄單字總表","category":"ㅍ","korean":"피자","chinese":"披薩","pos":"名詞/其他","papago":"피자","hint":"","example":"","exampleCn":"","note":""},{"id":641,"source":"課本附錄單字總表","category":"ㅍ","korean":"필통","chinese":"筆筒","pos":"名詞/其他","papago":"필통","hint":"","example":"","exampleCn":"","note":""},{"id":642,"source":"課本附錄單字總表","category":"ㅎ","korean":"하고","chinese":"和","pos":"名詞/其他","papago":"하고","hint":"","example":"","exampleCn":"","note":""},{"id":643,"source":"課本附錄單字總表","category":"ㅎ","korean":"하나","chinese":"一","pos":"名詞/其他","papago":"하나","hint":"","example":"","exampleCn":"","note":""},{"id":644,"source":"課本附錄單字總表","category":"ㅎ","korean":"하늘","chinese":"天空","pos":"名詞/其他","papago":"하늘","hint":"","example":"","exampleCn":"","note":""},{"id":645,"source":"課本附錄單字總表","category":"ㅎ","korean":"하다","chinese":"做","pos":"動詞/片語","papago":"하다","hint":"","example":"","exampleCn":"","note":""},{"id":646,"source":"課本附錄單字總表","category":"ㅎ","korean":"학교","chinese":"學校","pos":"名詞/其他","papago":"학교","hint":"","example":"","exampleCn":"","note":""},{"id":647,"source":"課本附錄單字總表","category":"ㅎ","korean":"학생","chinese":"學生","pos":"名詞/其他","papago":"학생","hint":"","example":"","exampleCn":"","note":""},{"id":648,"source":"課本附錄單字總表","category":"ㅎ","korean":"한강","chinese":"漢江","pos":"名詞/其他","papago":"한강","hint":"","example":"","exampleCn":"","note":""},{"id":649,"source":"課本附錄單字總表","category":"ㅎ","korean":"한국어","chinese":"韓語","pos":"名詞/其他","papago":"한국어","hint":"","example":"","exampleCn":"","note":""},{"id":650,"source":"課本附錄單字總表","category":"ㅎ","korean":"한국어로","chinese":"用韓語","pos":"名詞/其他","papago":"한국어로","hint":"","example":"","exampleCn":"","note":""},{"id":651,"source":"課本附錄單字總表","category":"ㅎ","korean":"한국","chinese":"韓國","pos":"名詞/其他","papago":"한국","hint":"","example":"","exampleCn":"","note":""},{"id":652,"source":"課本附錄單字總表","category":"ㅎ","korean":"한국 사람","chinese":"韓國人","pos":"名詞/其他","papago":"한국 사람","hint":"","example":"","exampleCn":"","note":""},{"id":653,"source":"課本附錄單字總表","category":"ㅎ","korean":"항상","chinese":"總是","pos":"名詞/其他","papago":"항상","hint":"","example":"","exampleCn":"","note":""},{"id":654,"source":"課本附錄單字總表","category":"ㅎ","korean":"해","chinese":"太陽","pos":"名詞/其他","papago":"해","hint":"","example":"","exampleCn":"","note":""},{"id":655,"source":"課本附錄單字總表","category":"ㅎ","korean":"햄버거","chinese":"漢堡","pos":"名詞/其他","papago":"햄버거","hint":"","example":"","exampleCn":"","note":""},{"id":656,"source":"課本附錄單字總表","category":"ㅎ","korean":"허리","chinese":"腰","pos":"名詞/其他","papago":"허리","hint":"","example":"","exampleCn":"","note":""},{"id":657,"source":"課本附錄單字總表","category":"ㅎ","korean":"호주","chinese":"澳洲","pos":"名詞/其他","papago":"호주","hint":"","example":"","exampleCn":"","note":""},{"id":658,"source":"課本附錄單字總表","category":"ㅎ","korean":"호주 사람","chinese":"澳洲人","pos":"名詞/其他","papago":"호주 사람","hint":"","example":"","exampleCn":"","note":""},{"id":659,"source":"課本附錄單字總表","category":"ㅎ","korean":"혼자","chinese":"獨自","pos":"名詞/其他","papago":"혼자","hint":"","example":"","exampleCn":"","note":""},{"id":660,"source":"課本附錄單字總表","category":"ㅎ","korean":"혀","chinese":"舌頭","pos":"名詞/其他","papago":"혀","hint":"","example":"","exampleCn":"","note":""},{"id":661,"source":"課本附錄單字總表","category":"ㅎ","korean":"화가","chinese":"畫家","pos":"名詞/其他","papago":"화가","hint":"","example":"","exampleCn":"","note":""},{"id":662,"source":"課本附錄單字總表","category":"ㅎ","korean":"화요일","chinese":"星期二","pos":"名詞/其他","papago":"화요일","hint":"","example":"","exampleCn":"","note":""},{"id":663,"source":"課本附錄單字總表","category":"ㅎ","korean":"화장실","chinese":"洗手間","pos":"名詞/其他","papago":"화장실","hint":"","example":"","exampleCn":"","note":""},{"id":664,"source":"課本附錄單字總表","category":"ㅎ","korean":"회사","chinese":"公司","pos":"名詞/其他","papago":"회사","hint":"","example":"","exampleCn":"","note":""},{"id":665,"source":"課本附錄單字總表","category":"ㅎ","korean":"회사원","chinese":"上班族","pos":"名詞/其他","papago":"회사원","hint":"","example":"","exampleCn":"","note":""},{"id":666,"source":"課本附錄單字總表","category":"ㅎ","korean":"회의","chinese":"會議","pos":"名詞/其他","papago":"회의","hint":"","example":"","exampleCn":"","note":""},{"id":667,"source":"課本附錄單字總表","category":"ㅎ","korean":"휴대폰","chinese":"手機","pos":"名詞/其他","papago":"휴대폰","hint":"","example":"","exampleCn":"","note":""},{"id":668,"source":"課本附錄單字總表","category":"ㅎ","korean":"휴지","chinese":"衛生紙","pos":"名詞/其他","papago":"휴지","hint":"","example":"","exampleCn":"","note":""},{"id":669,"source":"課本附錄單字總表","category":"ㅎ","korean":"흐리다","chinese":"陰天的","pos":"名詞/其他","papago":"흐리다","hint":"","example":"","exampleCn":"","note":""},{"id":670,"source":"課本附錄單字總表","category":"ㅎ","korean":"히읗","chinese":"子音ㅎ","pos":"名詞/其他","papago":"히읗","hint":"","example":"","exampleCn":"","note":""},{"id":671,"source":"課本附錄單字總表","category":"ㅎ","korean":"N서울타워","chinese":"N首爾塔","pos":"名詞/其他","papago":"N서울타워","hint":"","example":"","exampleCn":"","note":""}];
+</script>
+<script type="text/babel">
+const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+// ============ DATA ============
+const categories = ['全部','職業','場所','ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const categoryLabels = {'全部':'全部單字','職業':'職業','場所':'場所','ㄱ':'課本 ㄱ','ㄴ':'課本 ㄴ','ㄷ':'課本 ㄷ','ㄹ':'課本 ㄹ','ㅁ':'課本 ㅁ','ㅂ':'課本 ㅂ','ㅅ':'課本 ㅅ','ㅇ':'課本 ㅇ','ㅈ':'課本 ㅈ','ㅊ':'課本 ㅊ','ㅋ':'課本 ㅋ','ㅌ':'課본 ㅌ','ㅍ':'課本 ㅍ','ㅎ':'課本 ㅎ'};
+
+const grammarTemplates = [
+  {id:'g1',pattern:'저는 ___이에요/예요.',hint:'我是___。',category:'職業',note:'N이에요/예요 自我介紹'},
+  {id:'g2',pattern:'저는 ___에 가요.',hint:'我去___。',category:'場所',note:'N에 가다 前往某地'},
+  {id:'g3',pattern:'저는 ___을/를 좋아해요.',hint:'我喜歡___。',category:'全部',note:'N을/를 좋아하다'},
+  {id:'g4',pattern:'___이/가 있어요.',hint:'有___。',category:'全部',note:'N이/가 있다 表示存在'},
+  {id:'g5',pattern:'저는 ___에서 공부해요.',hint:'我在___念書。',category:'場所',note:'N에서 動作發生地點'},
+];
+
+const translationQs = [
+  {id:'t1',chinese:'我是學生。',answer:'저는 학생이에요.',hint:'저는 N이에요',category:'職業'},
+  {id:'t2',chinese:'我是老師。',answer:'저는 선생님이에요.',hint:'저는 N이에요',category:'職業'},
+  {id:'t3',chinese:'我去學校。',answer:'저는 학교에 가요.',hint:'저는 N에 가요',category:'場所'},
+  {id:'t4',chinese:'我去醫院。',answer:'저는 병원에 가요.',hint:'저는 N에 가요',category:'場所'},
+  {id:'t5',chinese:'我是公司職員。',answer:'저는 회사원이에요.',hint:'저는 N이에요',category:'職業'},
+  {id:'t6',chinese:'我去咖啡廳。',answer:'저는 카페에 가요.',hint:'저는 N에 가요',category:'場所'},
+  {id:'t7',chinese:'我是醫生。',answer:'저는 의사예요.',hint:'저는 N예요',category:'職業'},
+  {id:'t8',chinese:'我去圖書館。',answer:'저는 도서관에 가요.',hint:'저는 N에 가요',category:'場所'},
+  {id:'t9',chinese:'我是護士。',answer:'저는 간호사예요.',hint:'저는 N예요',category:'職業'},
+  {id:'t10',chinese:'我去超市。',answer:'저는 마트에 가요.',hint:'저는 N에 가요',category:'場所'},
+];
+
+// ============ UTILS ============
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+function getToday() { return new Date().toDateString(); }
+
+// ============ STORAGE HOOK ============
+function useProgress() {
+  const [progress, setProgress] = useState(() => {
+    try { const s = localStorage.getItem('kor_prog_v1'); return s ? JSON.parse(s) : {totalAnswered:0,totalCorrect:0,learnedWords:[],wrongAnswers:{},dailyStats:{}}; }
+    catch { return {totalAnswered:0,totalCorrect:0,learnedWords:[],wrongAnswers:{},dailyStats:{}}; }
+  });
+  useEffect(() => { try { localStorage.setItem('kor_prog_v1', JSON.stringify(progress)); } catch {} }, [progress]);
+
+  const today = getToday();
+  const todayStats = progress.dailyStats[today] || {answered:0,correct:0};
+
+  const recordAnswer = useCallback((word, isCorrect) => {
+    setProgress(prev => {
+      const dayStats = prev.dailyStats[today] || {answered:0,correct:0};
+      const learned = prev.learnedWords || [];
+      const wrongs = {...(prev.wrongAnswers||{})};
+      if (!isCorrect) {
+        const ex = wrongs[word.id] || {count:0};
+        wrongs[word.id] = {korean:word.korean,chinese:word.chinese,category:word.category,papago:word.papago,pos:word.pos,count:ex.count+1,lastWrong:new Date().toISOString()};
+      }
+      return {
+        ...prev,
+        totalAnswered: (prev.totalAnswered||0)+1,
+        totalCorrect: (prev.totalCorrect||0)+(isCorrect?1:0),
+        learnedWords: isCorrect && !learned.includes(word.id) ? [...learned,word.id] : learned,
+        wrongAnswers: wrongs,
+        dailyStats: {...prev.dailyStats,[today]:{answered:dayStats.answered+1,correct:dayStats.correct+(isCorrect?1:0)}}
+      };
+    });
+  }, [today]);
+
+  const removeFromWrong = useCallback((id) => {
+    setProgress(prev => { const w = {...prev.wrongAnswers}; delete w[id]; return {...prev,wrongAnswers:w}; });
+  }, []);
+
+  const wrongList = Object.entries(progress.wrongAnswers||{}).map(([id,d]) => ({id:parseInt(id),...d})).sort((a,b)=>b.count-a.count);
+  const acc = progress.totalAnswered > 0 ? Math.round(progress.totalCorrect/progress.totalAnswered*100) : 0;
+  const todayAcc = todayStats.answered > 0 ? Math.round(todayStats.correct/todayStats.answered*100) : 0;
+
+  return {progress,todayStats,todayAcc,acc,learnedCount:(progress.learnedWords||[]).length,wrongList,recordAnswer,removeFromWrong,
+    resetProgress:()=>setProgress({totalAnswered:0,totalCorrect:0,learnedWords:[],wrongAnswers:{},dailyStats:{}})};
+}
+
+// ============ PAPAGO BUTTON ============
+function SpeakBtn({word, small}) {
+  const [playing, setPlaying] = useState(false);
+  const doSpeak = (e) => {
+    e.stopPropagation();
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(word.korean);
+    u.lang = 'ko-KR'; u.rate = 0.85; u.pitch = 1;
+    u.onstart = () => setPlaying(true);
+    u.onend = () => setPlaying(false);
+    u.onerror = () => setPlaying(false);
+    window.speechSynthesis.speak(u);
+    setPlaying(true);
+  };
+  const s = small ? {
+    display:'inline-flex',alignItems:'center',gap:'3px',padding:'2px 8px',fontSize:'11px',
+    background: playing ? '#dbeafe' : '#eff6ff',
+    color: playing ? '#1d4ed8' : '#3b82f6',
+    border:`1px solid ${playing ? '#93c5fd' : '#bfdbfe'}`,
+    borderRadius:'999px',cursor:'pointer',transition:'all 0.15s',fontFamily:'inherit'
+  } : {
+    display:'inline-flex',alignItems:'center',gap:'5px',padding:'6px 12px',fontSize:'13px',
+    background: playing ? '#dbeafe' : '#eff6ff',
+    color: playing ? '#1d4ed8' : '#3b82f6',
+    border:`1px solid ${playing ? '#93c5fd' : '#bfdbfe'}`,
+    borderRadius:'12px',cursor:'pointer',transition:'all 0.15s',fontFamily:'inherit'
+  };
+  return (
+    <button style={s} onClick={doSpeak} title="點我聽發音">
+      {playing ? '🔊' : '🔈'} {small ? '聽發音' : '點我聽發音'}
+    </button>
+  );
+}
+
+function PapagoBtn({word, small}) {
+  const q = word.papago || word.korean;
+  const url = `https://papago.naver.com/?sk=ko&tk=zh-TW&st=${encodeURIComponent(q)}`;
+  const s = small ? {
+    display:'inline-flex',alignItems:'center',gap:'4px',padding:'2px 8px',fontSize:'11px',
+    background:'#f0fdf4',color:'#16a34a',border:'1px solid #bbf7d0',borderRadius:'999px',
+    textDecoration:'none',cursor:'pointer'
+  } : {
+    display:'inline-flex',alignItems:'center',gap:'6px',padding:'6px 12px',fontSize:'13px',
+    background:'linear-gradient(to right,#f0fdf4,#ecfdf5)',color:'#15803d',
+    border:'1px solid #bbf7d0',borderRadius:'12px',textDecoration:'none',cursor:'pointer'
+  };
+  return <a href={url} target="_blank" rel="noopener noreferrer" style={s} onClick={e=>e.stopPropagation()}>Papago</a>;
+}
+
+function WordButtons({word, small}) {
+  return (
+    <span style={{display:'inline-flex',gap:'5px',alignItems:'center',flexWrap:'wrap'}}>
+      <SpeakBtn word={word} small={small} />
+      <PapagoBtn word={word} small={small} />
+    </span>
+  );
+}
+
+// ============ SPEAK ============
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ko-KR'; u.rate = 0.85; u.pitch = 1;
+  window.speechSynthesis.speak(u);
+}
+
+// ============ QUIZ CARD ============
+function QuizCard({words, mode, onAnswer}) {
+  const [current, setCurrent] = useState(null);
+  const [options, setOptions] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [input, setInput] = useState('');
+  const [result, setResult] = useState(null);
+  const [showAns, setShowAns] = useState(false);
+  const [key, setKey] = useState(0);
+
+  function next() {
+    if (!words || words.length < 4) return;
+    const w = words[Math.floor(Math.random()*words.length)];
+    const others = shuffle(words.filter(x=>x.id!==w.id)).slice(0,3);
+    setCurrent(w); setOptions(shuffle([w,...others]));
+    setSelected(null); setInput(''); setResult(null); setShowAns(false);
+    setKey(k=>k+1);
+  }
+
+  useEffect(()=>{ next(); }, [words, mode]);
+
+  if (!current) return <div style={{textAlign:'center',padding:'32px',color:'#94a3b8'}}>載入中...</div>;
+
+  const handleSelect = (opt) => {
+    if (result) return;
+    setSelected(opt);
+    const ok = opt.id===current.id;
+    setResult(ok?'correct':'wrong');
+    onAnswer(current, ok);
+  };
+  const handleInput = () => {
+    if (result || !input.trim()) return;
+    const ok = input.trim() === current.korean;
+    setResult(ok?'correct':'wrong');
+    setShowAns(true);
+    onAnswer(current, ok);
+  };
+
+  const cardBg = result==='correct'?'#f0fdf4':result==='wrong'?'#fff1f2':'white';
+  const cardBorder = result==='correct'?'#a7f3d0':result==='wrong'?'#fecdd3':'#e0f2fe';
+
+  return (
+    <div key={key} className="fade-in" style={{background:cardBg,border:`2px solid ${cardBorder}`,borderRadius:'16px',padding:'24px',transition:'all 0.3s'}}>
+      <div style={{textAlign:'center',marginBottom:'20px'}}>
+        <div style={{fontSize:'11px',color:'#94a3b8',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'8px'}}>
+          {mode==='ko-to-cn'?'看韓文，選中文意思':'看中文，輸入韓文'}
+        </div>
+        {mode==='ko-to-cn' ? (
+          <>
+            <div className="korean" style={{fontSize:'40px',fontWeight:'700',color:'#1e293b',marginBottom:'4px'}}>{current.korean}</div>
+            {current.hint && <div style={{fontSize:'13px',color:'#94a3b8'}}>發音提示：{current.hint}</div>}
+          </>
+        ) : (
+          <>
+            <div style={{fontSize:'32px',fontWeight:'700',color:'#1e293b',marginBottom:'4px'}}>{current.chinese}</div>
+            {current.pos && <div style={{fontSize:'13px',color:'#0ea5e9'}}>{current.pos}</div>}
+          </>
+        )}
+      </div>
+
+      {mode==='ko-to-cn' ? (
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'16px'}}>
+          {options.map(opt => {
+            let bg='#f0f9ff',border='#e0f2fe',color='#334155';
+            if (result) {
+              if (opt.id===current.id) {bg='#d1fae5';border='#34d399';color='#065f46';}
+              else if (opt.id===selected?.id) {bg='#ffe4e6';border='#f87171';color='#9f1239';}
+              else {bg='#f8fafc';border='#e2e8f0';color='#94a3b8';}
+            }
+            return (
+              <button key={opt.id} onClick={()=>handleSelect(opt)} disabled={!!result}
+                style={{padding:'12px',fontSize:'13px',fontWeight:'500',borderRadius:'12px',
+                  border:`2px solid ${border}`,background:bg,color,textAlign:'left',
+                  cursor:result?'default':'pointer',transition:'all 0.15s',fontFamily:'inherit'}}>
+                {opt.chinese}
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <div style={{marginBottom:'12px'}}>
+          <input className="korean" value={input} onChange={e=>setInput(e.target.value)}
+            onKeyDown={e=>e.key==='Enter'&&!result&&handleInput()}
+            placeholder="輸入韓文..." disabled={!!result}
+            style={{width:'100%',border:'2px solid #bae6fd',borderRadius:'12px',padding:'12px 16px',
+              fontSize:'20px',background:'#f0f9ff',fontFamily:"'Noto Sans KR',sans-serif",
+              marginBottom:'8px',display:'block'}} />
+          <button onClick={handleInput} disabled={!!result||!input.trim()}
+            style={{width:'100%',padding:'12px',background:'#0ea5e9',color:'white',borderRadius:'12px',
+              opacity:result||!input.trim()?0.4:1,fontSize:'15px',fontWeight:'600',fontFamily:'inherit'}}>確認</button>
+          {showAns && result==='wrong' && (
+            <div style={{marginTop:'8px',fontSize:'13px',color:'#e11d48'}}>
+              正確答案：<span className="korean" style={{fontWeight:'700'}}>{current.korean}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {result && (
+        <div className="fade-in" style={{marginBottom:'12px'}}>
+          <div style={{textAlign:'center',fontSize:'13px',fontWeight:'600',marginBottom:'8px',
+            color:result==='correct'?'#059669':'#e11d48'}}>
+            {result==='correct'?'✓ 答對了！':'✗ 答錯了，加油！'}
+          </div>
+          <div style={{background:'white',borderRadius:'12px',border:'1px solid #e0f2fe',padding:'12px',fontSize:'13px'}}>
+            <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap',marginBottom:'6px'}}>
+              <span className="korean" style={{fontWeight:'700',fontSize:'18px'}}>{current.korean}</span>
+              <span style={{color:'#64748b'}}>{current.chinese}</span>
+              {current.pos && <span style={{fontSize:'11px',background:'#e0f2fe',color:'#0284c7',padding:'2px 8px',borderRadius:'999px'}}>{current.pos}</span>}
+            </div>
+            {current.example && <div style={{color:'#64748b',marginBottom:'6px'}}>
+              <span className="korean">{current.example}</span>
+              {current.exampleCn && <span style={{color:'#94a3b8'}}> （{current.exampleCn}）</span>}
+            </div>}
+            <WordButtons word={current} small />
+          </div>
+        </div>
+      )}
+
+      <button onClick={next} disabled={!result}
+        style={{width:'100%',padding:'10px',borderRadius:'12px',fontSize:'13px',fontWeight:'600',
+          background:result?'linear-gradient(to right,#0ea5e9,#3b82f6)':'#f1f5f9',
+          color:result?'white':'#94a3b8',cursor:result?'pointer':'not-allowed',transition:'all 0.2s',
+          fontFamily:'inherit'}}>
+        下一題 →
+      </button>
+    </div>
+  );
+}
+
+// ============ LISTENING QUIZ ============
+function ListeningQuiz({words, onAnswer}) {
+  const [current, setCurrent] = useState(null);
+  const [options, setOptions] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [result, setResult] = useState(null);
+  const [hasPlayed, setHasPlayed] = useState(false);
+  const [key, setKey] = useState(0);
+
+  function next() {
+    if (!words || words.length < 4) return;
+    const w = words[Math.floor(Math.random()*words.length)];
+    const others = shuffle(words.filter(x=>x.id!==w.id)).slice(0,3);
+    setCurrent(w); setOptions(shuffle([w,...others]));
+    setSelected(null); setResult(null); setHasPlayed(false);
+    setKey(k=>k+1);
+  }
+
+  useEffect(()=>{ next(); }, [words]);
+  useEffect(()=>{ if (current) { setTimeout(()=>{ speak(current.korean); setHasPlayed(true); }, 400); } }, [current?.id]);
+
+  if (!current) return null;
+
+  const doSpeak = () => { speak(current.korean); setHasPlayed(true); };
+  const handleSel = (opt) => {
+    if (result||!hasPlayed) return;
+    setSelected(opt);
+    const ok=opt.id===current.id;
+    setResult(ok?'correct':'wrong');
+    onAnswer(current,ok);
+  };
+
+  return (
+    <div key={key} className="fade-in" style={{background:'white',border:'2px solid #e0f2fe',borderRadius:'16px',padding:'24px'}}>
+      <div style={{fontSize:'11px',color:'#94a3b8',textAlign:'center',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'20px'}}>聽韓文，選正確的中文意思</div>
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:'12px',marginBottom:'24px'}}>
+        <button onClick={doSpeak}
+          style={{width:'80px',height:'80px',borderRadius:'50%',fontSize:'32px',
+            background:'linear-gradient(135deg,#38bdf8,#3b82f6)',color:'white',
+            boxShadow:'0 4px 15px rgba(56,189,248,0.4)',transition:'transform 0.1s',border:'none',cursor:'pointer'}}>
+          🔊
+        </button>
+        <button onClick={doSpeak} style={{fontSize:'12px',color:'#0ea5e9',background:'none',border:'none',cursor:'pointer'}}>↺ 重播</button>
+        {!hasPlayed && <div style={{fontSize:'12px',color:'#d97706',background:'#fffbeb',padding:'4px 12px',borderRadius:'999px',border:'1px solid #fde68a'}}>先聽語音，再選答案</div>}
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'16px'}}>
+        {options.map(opt=>{
+          let bg='#f0f9ff',border='#e0f2fe',color='#334155';
+          if (!hasPlayed) {bg='#f8fafc';color='#cbd5e1';}
+          if (result) {
+            if (opt.id===current.id) {bg='#d1fae5';border='#34d399';color='#065f46';}
+            else if (opt.id===selected?.id) {bg='#ffe4e6';border='#f87171';color='#9f1239';}
+            else {bg='#f8fafc';border='#e2e8f0';color='#94a3b8';}
+          }
+          return <button key={opt.id} onClick={()=>handleSel(opt)} disabled={!!result||!hasPlayed}
+            style={{padding:'12px',fontSize:'13px',fontWeight:'500',borderRadius:'12px',
+              border:`2px solid ${border}`,background:bg,color,textAlign:'left',
+              cursor:result||!hasPlayed?'default':'pointer',fontFamily:'inherit'}}>{opt.chinese}</button>;
+        })}
+      </div>
+      {result && <div className="fade-in">
+        <div style={{textAlign:'center',fontSize:'13px',fontWeight:'600',marginBottom:'8px',color:result==='correct'?'#059669':'#e11d48'}}>
+          {result==='correct'?'✓ 答對了！':'✗ 答錯了！'}
+        </div>
+        <div style={{background:'#f0f9ff',borderRadius:'12px',border:'1px solid #e0f2fe',padding:'12px',fontSize:'13px',marginBottom:'8px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap',marginBottom:'4px'}}>
+            <span className="korean" style={{fontWeight:'700',fontSize:'20px'}}>{current.korean}</span>
+            <span style={{color:'#64748b'}}>{current.chinese}</span>
+            {current.pos&&<span style={{fontSize:'11px',background:'#e0f2fe',color:'#0284c7',padding:'2px 8px',borderRadius:'999px'}}>{current.pos}</span>}
+          </div>
+          {current.hint&&<div style={{fontSize:'12px',color:'#94a3b8',marginBottom:'6px'}}>發音提示：{current.hint}</div>}
+          <WordButtons word={current} small />
+        </div>
+      </div>}
+      <button onClick={next} disabled={!result}
+        style={{width:'100%',padding:'10px',borderRadius:'12px',fontSize:'13px',fontWeight:'600',
+          background:result?'linear-gradient(to right,#8b5cf6,#a855f7)':'#f1f5f9',
+          color:result?'white':'#94a3b8',cursor:result?'pointer':'not-allowed',fontFamily:'inherit'}}>
+        下一題 →
+      </button>
+    </div>
+  );
+}
+
+// ============ FILL IN BLANK ============
+// ============ 助詞題庫 ============
+const particleQuestions = [
+  // 은/는 （主題助詞）
+  {sentence:'저___ 학생이에요.', blank:'___', answer:'는', options:['는','이','을','에서'], note:'는/은：主題助詞（母音結尾用 는）', chinese:'我是學生。', explain:'저（我）母音結尾 → 는'},
+  {sentence:'선생님___ 한국 사람이에요.', blank:'___', answer:'은', options:['은','가','를','에서'], note:'는/은：主題助詞（子音結尾用 은）', chinese:'老師是韓國人。', explain:'선생님 子音結尾(ㅁ) → 은'},
+  {sentence:'오늘___ 날씨가 좋아요.', blank:'___', answer:'은', options:['은','이','을','에서'], note:'는/은：主題助詞', chinese:'今天天氣很好。', explain:'오늘 子音結尾(ㄹ) → 은'},
+  {sentence:'저___ 커피를 좋아해요.', blank:'___', answer:'는', options:['는','이','을','에'], note:'는/은：主題助詞', chinese:'我喜歡咖啡。', explain:'저 母音結尾 → 는'},
+
+  // 이/가 （主格助詞）
+  {sentence:'학교___ 어디에 있어요?', blank:'___', answer:'가', options:['가','는','을','에서'], note:'이/가：主格助詞（母音結尾用 가）', chinese:'學校在哪裡？', explain:'학교 母音結尾 → 가'},
+  {sentence:'친구___ 있어요.', blank:'___', answer:'가', options:['가','은','를','에서'], note:'이/가：主格助詞', chinese:'有朋友。', explain:'친구 母音結尾 → 가'},
+  {sentence:'선생님___ 오세요.', blank:'___', answer:'이', options:['이','는','를','에'], note:'이/가：主格助詞（子音結尾用 이）', chinese:'老師來了。', explain:'선생님 子音結尾(ㅁ) → 이'},
+  {sentence:'책___ 있어요.', blank:'___', answer:'이', options:['이','가','를','에서'], note:'이/가：主格助詞（子音結尾用 이）', chinese:'有書。', explain:'책 子音結尾(ㄱ) → 이'},
+
+  // 을/를 （受格助詞）
+  {sentence:'저는 커피___ 마셔요.', blank:'___', answer:'를', options:['를','은','이','에'], note:'을/를：受格助詞（母音結尾用 를）', chinese:'我喝咖啡。', explain:'커피 母音結尾 → 를'},
+  {sentence:'저는 밥___ 먹어요.', blank:'___', answer:'을', options:['을','는','이','에서'], note:'을/를：受格助詞（子音結尾用 을）', chinese:'我吃飯。', explain:'밥 子音結尾(ㅂ) → 을'},
+  {sentence:'저는 책___ 읽어요.', blank:'___', answer:'을', options:['을','는','가','에'], note:'을/를：受格助詞（子音結尾用 을）', chinese:'我看書。', explain:'책 子音結尾(ㄱ) → 을'},
+  {sentence:'저는 친구___ 만나요.', blank:'___', answer:'를', options:['를','은','이','에서'], note:'을/를：受格助詞', chinese:'我和朋友見面。', explain:'친구 母音結尾 → 를'},
+
+  // 에 （方向／存在地點）
+  {sentence:'저는 학교___ 가요.', blank:'___', answer:'에', options:['에','에서','을','이'], note:'에：表示方向（去往某地）', chinese:'我去學校。', explain:'에 表示移動的目的地'},
+  {sentence:'저는 집___ 있어요.', blank:'___', answer:'에', options:['에','에서','를','이'], note:'에：表示存在的地點', chinese:'我在家。', explain:'있다/없다 前用 에 表存在地點'},
+  {sentence:'카페___ 가요.', blank:'___', answer:'에', options:['에','에서','을','가'], note:'에：表示方向', chinese:'去咖啡廳。', explain:'에 表示移動目的地'},
+  {sentence:'병원___ 있어요.', blank:'___', answer:'에', options:['에','에서','를','은'], note:'에：表示存在地點', chinese:'在醫院。', explain:'있어요 前用 에'},
+
+  // 에서 （動作地點）
+  {sentence:'저는 학교___ 공부해요.', blank:'___', answer:'에서', options:['에서','에','을','이'], note:'에서：表示動作發生的場所', chinese:'我在學校念書。', explain:'에서 表示動作進行的地點'},
+  {sentence:'저는 카페___ 커피를 마셔요.', blank:'___', answer:'에서', options:['에서','에','를','가'], note:'에서：表示動作發生的場所', chinese:'我在咖啡廳喝咖啡。', explain:'에서 表示動作進行的地點'},
+  {sentence:'도서관___ 책을 읽어요.', blank:'___', answer:'에서', options:['에서','에','을','은'], note:'에서：表示動作發生的場所', chinese:'在圖書館看書。', explain:'에서 表示動作進行的地點'},
+  {sentence:'식당___ 밥을 먹어요.', blank:'___', answer:'에서', options:['에서','에','이','가'], note:'에서：表示動作發生的場所', chinese:'在餐廳吃飯。', explain:'에서 表示動作進行的地點'},
+
+  // 에 vs 에서 混合
+  {sentence:'저는 도서관___ 가요.', blank:'___', answer:'에', options:['에','에서','을','이'], note:'에 vs 에서：가요（移動）用 에', chinese:'我去圖書館。', explain:'가다（去）→ 目的地用 에'},
+  {sentence:'저는 도서관___ 있어요.', blank:'___', answer:'에', options:['에','에서','를','가'], note:'에 vs 에서：있어요（存在）用 에', chinese:'我在圖書館（存在）。', explain:'있다（在）→ 地點用 에'},
+  {sentence:'저는 도서관___ 공부해요.', blank:'___', answer:'에서', options:['에서','에','을','은'], note:'에 vs 에서：공부해요（動作）用 에서', chinese:'我在圖書館念書（動作）。', explain:'공부하다（念書）→ 動作地點用 에서'},
+
+  // 하고 / 와/과 （和）
+  {sentence:'저는 친구___ 영화를 봐요.', blank:'___', answer:'하고', options:['하고','에서','을','이'], note:'하고：和（口語用法）', chinese:'我和朋友看電影。', explain:'하고 表示「和」，口語中常用'},
+];
+
+function FillInBlank({onAnswer}) {
+  const [qList] = useState(()=>shuffle(particleQuestions));
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [result, setResult] = useState(null);
+  const [key, setKey] = useState(0);
+
+  const q = qList[idx % qList.length];
+  const displayOptions = useMemo(()=>shuffle(q.options), [idx, key]);
+
+  const handleSelect = (opt) => {
+    if (result) return;
+    setSelected(opt);
+    const ok = opt === q.answer;
+    setResult(ok ? 'correct' : 'wrong');
+    onAnswer({id:`p_${idx}`, korean:q.answer, chinese:q.note, category:'助詞', papago:q.answer}, ok);
+  };
+
+  const next = () => {
+    setIdx(i => i+1);
+    setSelected(null);
+    setResult(null);
+    setKey(k=>k+1);
+  };
+
+  // 把句子中 ___ 部分顯示為空格
+  const parts = q.sentence.split('___');
+
+  return (
+    <div key={key} className="fade-in" style={{background:'white',border:'2px solid #e0f2fe',borderRadius:'16px',padding:'24px'}}>
+      <div style={{fontSize:'11px',color:'#94a3b8',textAlign:'center',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'16px'}}>
+        助詞克漏字 ✏️
+      </div>
+
+      {/* 句子顯示 */}
+      <div style={{background:'#f0f9ff',borderRadius:'14px',padding:'20px',marginBottom:'14px',textAlign:'center',border:'1px solid #bae6fd'}}>
+        <div style={{fontSize:'12px',color:'#64748b',marginBottom:'8px'}}>{q.chinese}</div>
+        <div className="korean" style={{fontSize:'26px',fontWeight:'700',color:'#1e293b',letterSpacing:'1px',lineHeight:1.6}}>
+          {parts[0]}
+          <span style={{
+            display:'inline-block',minWidth:'52px',borderBottom:'3px solid',
+            borderColor: result==='correct'?'#10b981':result==='wrong'?'#e11d48':'#38bdf8',
+            color: result==='correct'?'#10b981':result==='wrong'?'#e11d48':'#0ea5e9',
+            fontWeight:'800',textAlign:'center',margin:'0 2px',padding:'0 4px',
+            transition:'all 0.2s'
+          }}>
+            {selected || '　'}
+          </span>
+          {parts[1]}
+        </div>
+      </div>
+
+      {/* 文法說明 */}
+      <div style={{fontSize:'12px',color:'#0284c7',background:'#f0f9ff',padding:'8px 12px',borderRadius:'8px',marginBottom:'14px',border:'1px solid #bae6fd'}}>
+        📌 {q.note}
+      </div>
+
+      {/* 選項按鈕 */}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'14px'}}>
+        {displayOptions.map(opt => {
+          let bg='#f0f9ff', border='#bae6fd', color='#334155', fw='500';
+          if (result) {
+            if (opt===q.answer) { bg='#d1fae5'; border='#34d399'; color='#065f46'; fw='700'; }
+            else if (opt===selected) { bg='#ffe4e6'; border='#f87171'; color='#9f1239'; }
+            else { bg='#f8fafc'; border='#e2e8f0'; color='#94a3b8'; }
+          }
+          return (
+            <button key={opt} onClick={()=>handleSelect(opt)} disabled={!!result}
+              className="korean"
+              style={{padding:'14px 8px',fontSize:'20px',fontWeight:fw,borderRadius:'12px',
+                border:`2px solid ${border}`,background:bg,color,
+                cursor:result?'default':'pointer',transition:'all 0.15s',
+                fontFamily:"'Noto Sans KR',sans-serif"}}>
+              {opt}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* 結果說明 */}
+      {result && (
+        <div className="fade-in" style={{marginBottom:'12px'}}>
+          <div style={{fontSize:'14px',fontWeight:'700',marginBottom:'6px',
+            color:result==='correct'?'#059669':'#e11d48',textAlign:'center'}}>
+            {result==='correct'?'✓ 正確！':'✗ 答錯了！正確答案是「'+q.answer+'」'}
+          </div>
+          <div style={{background:'#f0f9ff',borderRadius:'10px',padding:'10px 12px',fontSize:'13px',color:'#475569',border:'1px solid #e0f2fe'}}>
+            💡 {q.explain}
+          </div>
+        </div>
+      )}
+
+      <button onClick={next} disabled={!result}
+        style={{width:'100%',padding:'12px',borderRadius:'12px',fontSize:'14px',fontWeight:'600',
+          background:result?'linear-gradient(to right,#10b981,#059669)':'#f1f5f9',
+          color:result?'white':'#94a3b8',cursor:result?'pointer':'not-allowed',fontFamily:'inherit'}}>
+        下一題 →
+      </button>
+    </div>
+  );
+}
+
+// ============ TRANSLATION ============
+function TranslationPractice({onAnswer}) {
+  const [shuffled] = useState(()=>shuffle(translationQs));
+  const [idx, setIdx] = useState(0);
+  const [input, setInput] = useState('');
+  const [result, setResult] = useState(null);
+
+  const cur = shuffled[idx%shuffled.length];
+
+  const check = () => {
+    if (result) return;
+    const ok = input.trim()===cur.answer;
+    setResult(ok?'correct':'wrong');
+    onAnswer({id:`t_${cur.id}`,korean:cur.answer,chinese:cur.chinese,category:cur.category,papago:cur.answer}, ok);
+  };
+
+  const next = () => { setIdx(i=>i+1); setInput(''); setResult(null); };
+  const pWord = {korean:cur.answer,papago:cur.answer,chinese:cur.chinese};
+
+  return (
+    <div className="fade-in" style={{background:'white',border:'2px solid #e0f2fe',borderRadius:'16px',padding:'24px'}}>
+      <div style={{fontSize:'11px',color:'#94a3b8',textAlign:'center',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'16px'}}>小翻譯練習</div>
+      <div style={{background:'linear-gradient(135deg,#faf5ff,#f3e8ff)',borderRadius:'12px',padding:'20px',marginBottom:'12px',textAlign:'center',border:'1px solid #e9d5ff'}}>
+        <div style={{fontSize:'26px',fontWeight:'700',color:'#7c3aed',marginBottom:'4px'}}>{cur.chinese}</div>
+        <div style={{fontSize:'12px',color:'#a78bfa'}}>請翻譯成韓文</div>
+      </div>
+      <div style={{fontSize:'12px',color:'#7c3aed',background:'#faf5ff',padding:'8px 12px',borderRadius:'8px',marginBottom:'12px',border:'1px solid #e9d5ff'}}>📌 提示：{cur.hint}</div>
+      <div style={{marginBottom:'8px'}}>
+        <input className="korean" value={input} onChange={e=>setInput(e.target.value)}
+          onKeyDown={e=>e.key==='Enter'&&!result&&check()}
+          placeholder="輸入韓文翻譯..." disabled={!!result}
+          style={{width:'100%',border:'2px solid #bae6fd',borderRadius:'12px',padding:'12px 16px',fontSize:'18px',background:'#f0f9ff',fontFamily:"'Noto Sans KR',sans-serif",display:'block',marginBottom:'8px'}} />
+        <button onClick={check} disabled={!!result||!input.trim()}
+          style={{width:'100%',padding:'12px',background:'#7c3aed',color:'white',borderRadius:'12px',opacity:result||!input.trim()?0.4:1,fontSize:'15px',fontWeight:'600',fontFamily:'inherit'}}>確認</button>
+      </div>
+      {result && <div className="fade-in">
+        <div style={{fontSize:'13px',fontWeight:'600',marginBottom:'6px',color:result==='correct'?'#059669':'#e11d48'}}>
+          {result==='correct'?'✓ 正確！':'✗ 答錯了'}
+        </div>
+        <div style={{background:result==='wrong'?'#fff1f2':'#d1fae5',borderRadius:'12px',padding:'12px',border:`1px solid ${result==='wrong'?'#fecdd3':'#a7f3d0'}`,marginBottom:'8px'}}>
+          <div style={{fontSize:'11px',color:'#94a3b8',marginBottom:'2px'}}>正確答案</div>
+          <div className="korean" style={{fontWeight:'700',fontSize:'20px'}}>{cur.answer}</div>
+        </div>
+        <WordButtons word={pWord} small />
+      </div>}
+      <button onClick={next} disabled={!result}
+        style={{width:'100%',marginTop:'16px',padding:'10px',borderRadius:'12px',fontSize:'13px',fontWeight:'600',
+          background:result?'linear-gradient(to right,#7c3aed,#9333ea)':'#f1f5f9',
+          color:result?'white':'#94a3b8',cursor:result?'pointer':'not-allowed',fontFamily:'inherit'}}>
+        下一題 →
+      </button>
+    </div>
+  );
+}
+
+// ============ VOCAB BROWSER ============
+function VocabBrowser({words}) {
+  const [search, setSearch] = useState('');
+  const [expandedId, setExpandedId] = useState(null);
+  const filtered = words.filter(w=>!search||w.korean.includes(search)||w.chinese.includes(search));
+
+  return (
+    <div>
+      <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="搜尋韓文或中文..."
+        style={{width:'100%',border:'2px solid #bae6fd',borderRadius:'12px',padding:'10px 16px',
+          fontSize:'14px',background:'#f0f9ff',marginBottom:'12px',fontFamily:'inherit'}} />
+      <div style={{fontSize:'12px',color:'#94a3b8',marginBottom:'8px'}}>共 {filtered.length} 筆</div>
+      <div style={{maxHeight:'55vh',overflowY:'auto',paddingRight:'4px',display:'flex',flexDirection:'column',gap:'6px'}}>
+        {filtered.map(w=>(
+          <div key={`${w.id}-${w.korean}`} onClick={()=>setExpandedId(expandedId===w.id?null:w.id)}
+            style={{background:'white',borderRadius:'12px',border:'1px solid #e0f2fe',padding:'12px',cursor:'pointer',transition:'all 0.15s'}}>
+            <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+              <div style={{flex:1}}>
+                <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
+                  <span className="korean" style={{fontWeight:'700',fontSize:'16px'}}>{w.korean}</span>
+                  <span style={{color:'#64748b',fontSize:'13px'}}>{w.chinese}</span>
+                  {w.pos&&<span style={{fontSize:'10px',background:'#e0f2fe',color:'#0284c7',padding:'1px 6px',borderRadius:'999px'}}>{w.pos}</span>}
+                </div>
+              </div>
+              <div style={{display:'flex',gap:'6px'}} onClick={e=>e.stopPropagation()}>
+                <WordButtons word={w} small />
+              </div>
+            </div>
+            {expandedId===w.id&&<div className="fade-in" style={{marginTop:'8px',paddingTop:'8px',borderTop:'1px solid #f0f9ff',fontSize:'12px',color:'#64748b'}}>
+              {w.hint&&<div>發音提示：{w.hint}</div>}
+              {w.example&&<div className="korean">{w.example}{w.exampleCn&&<span style={{color:'#94a3b8'}}> （{w.exampleCn}）</span>}</div>}
+              {w.note&&<div style={{color:'#94a3b8'}}>備註：{w.note}</div>}
+              <div style={{color:'#cbd5e1',fontSize:'11px'}}>來源：{w.source} ／ 分類：{w.category}</div>
+            </div>}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ============ WRONG ANSWER LIST ============
+function WrongList({wrongList, onPractice, onRemove}) {
+  if (!wrongList.length) return (
+    <div style={{background:'white',borderRadius:'16px',border:'1px solid #e0f2fe',padding:'40px',textAlign:'center'}}>
+      <div style={{fontSize:'40px',marginBottom:'12px'}}>🎉</div>
+      <div style={{fontWeight:'600',color:'#475569'}}>太棒了！錯題本是空的</div>
+      <div style={{fontSize:'13px',color:'#94a3b8',marginTop:'4px'}}>繼續練習，累積錯題後會顯示在這裡</div>
+    </div>
+  );
+  return (
+    <div>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}}>
+        <span style={{fontSize:'13px',color:'#64748b'}}>共 <strong style={{color:'#e11d48'}}>{wrongList.length}</strong> 個錯題</span>
+        <button onClick={onPractice}
+          style={{padding:'6px 16px',background:'linear-gradient(to right,#f43f5e,#ec4899)',color:'white',borderRadius:'12px',fontSize:'13px',fontFamily:'inherit'}}>
+          重新練習錯題
+        </button>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+        {wrongList.map(w=>(
+          <div key={w.id} style={{background:'white',borderRadius:'12px',border:'1px solid #fee2e2',padding:'12px'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+              <div style={{flex:1}}>
+                <div style={{display:'flex',alignItems:'center',gap:'6px',flexWrap:'wrap',marginBottom:'6px'}}>
+                  <span className="korean" style={{fontWeight:'700',fontSize:'18px'}}>{w.korean}</span>
+                  <span style={{color:'#64748b',fontSize:'13px'}}>{w.chinese}</span>
+                  {w.pos&&<span style={{fontSize:'10px',background:'#e0f2fe',color:'#0284c7',padding:'1px 6px',borderRadius:'999px'}}>{w.pos}</span>}
+                  <span style={{fontSize:'10px',background:'#fee2e2',color:'#e11d48',padding:'1px 6px',borderRadius:'999px'}}>答錯 {w.count} 次</span>
+                </div>
+                <WordButtons word={w} small />
+              </div>
+              <button onClick={()=>onRemove(w.id)} style={{color:'#cbd5e1',fontSize:'20px',lineHeight:1,padding:'0 4px',cursor:'pointer'}}>×</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ============ PROGRESS CARD ============
+function ProgressCard({todayStats,todayAcc,learnedCount,wrongCount}) {
+  const stats = [
+    {label:'今日練習',value:todayStats.answered,icon:'📝',bg:'#eff6ff',text:'#1d4ed8'},
+    {label:'今日正確率',value:todayStats.answered>0?`${todayAcc}%`:'—',icon:'🎯',bg:'#ecfdf5',text:'#047857'},
+    {label:'已學單字',value:`${learnedCount}/${VOCAB_DATA.length}`,icon:'📚',bg:'#f5f3ff',text:'#6d28d9'},
+    {label:'錯題數',value:wrongCount,icon:'❌',bg:'#fff1f2',text:'#be123c'},
+  ];
+  return (
+    <div style={{background:'white',borderRadius:'16px',border:'1px solid #e0f2fe',padding:'20px',boxShadow:'0 1px 3px rgba(0,0,0,0.05)'}}>
+      <div style={{fontSize:'14px',fontWeight:'600',color:'#475569',marginBottom:'12px',display:'flex',alignItems:'center',gap:'6px'}}>📊 學習進度</div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'12px'}}>
+        {stats.map(s=>(
+          <div key={s.label} style={{background:s.bg,borderRadius:'12px',padding:'12px',textAlign:'center'}}>
+            <div style={{fontSize:'22px',marginBottom:'2px'}}>{s.icon}</div>
+            <div style={{fontSize:'20px',fontWeight:'700',color:s.text}}>{s.value}</div>
+            <div style={{fontSize:'11px',color:'#94a3b8',marginTop:'1px'}}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+      {todayStats.answered>0&&<>
+        <div style={{display:'flex',justifyContent:'space-between',fontSize:'11px',color:'#94a3b8',marginBottom:'4px'}}>
+          <span>今日正確率</span><span>{todayAcc}%</span>
+        </div>
+        <div style={{height:'6px',background:'#e0f2fe',borderRadius:'999px',overflow:'hidden'}}>
+          <div style={{height:'100%',background:'linear-gradient(to right,#38bdf8,#3b82f6)',borderRadius:'999px',width:`${todayAcc}%`,transition:'width 0.5s'}} />
+        </div>
+      </>}
+    </div>
+  );
+}
+
+// ============ CATEGORY SELECTOR ============
+function CatSelector({selected, onChange, accent='#0ea5e9', accentLight='#f0f9ff'}) {
+  return (
+    <div style={{background:'white',borderRadius:'16px',border:'1px solid #e0f2fe',padding:'16px'}}>
+      <div style={{fontSize:'11px',color:'#94a3b8',marginBottom:'8px',fontWeight:'500'}}>選擇分類</div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:'6px',maxHeight:'96px',overflowY:'auto'}}>
+        {categories.map(cat=>(
+          <button key={cat} onClick={()=>onChange(cat)}
+            style={{padding:'4px 12px',borderRadius:'999px',fontSize:'12px',fontWeight:'500',
+              background:selected===cat?accent:accentLight,color:selected===cat?'white':'#475569',
+              border:'none',cursor:'pointer',transition:'all 0.15s',fontFamily:'inherit'}}>
+            {categoryLabels[cat]||cat}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ============ MAIN APP ============
+const TABS = [
+  {id:'home',label:'首頁',icon:'🏠'},
+  {id:'quiz',label:'單字測驗',icon:'📝'},
+  {id:'listening',label:'聽力',icon:'🎧'},
+  {id:'fill',label:'克漏字',icon:'✏️'},
+  {id:'translate',label:'翻譯',icon:'💬'},
+  {id:'vocab',label:'單字本',icon:'📚'},
+  {id:'wrong',label:'錯題本',icon:'❌'},
+];
+
+function App() {
+  const [tab, setTab] = useState('home');
+  const [cat, setCat] = useState('全部');
+  const [qMode, setQMode] = useState('ko-to-cn');
+  const [practiceWrong, setPracticeWrong] = useState(false);
+  const {todayStats,todayAcc,acc,learnedCount,wrongList,recordAnswer,removeFromWrong,resetProgress} = useProgress();
+
+  const filteredWords = useMemo(()=> cat==='全部'?VOCAB_DATA:VOCAB_DATA.filter(w=>w.category===cat), [cat]);
+  const quizWords = useMemo(()=>{
+    if (practiceWrong&&wrongList.length>0) {
+      const ids = new Set(wrongList.map(w=>w.id));
+      return VOCAB_DATA.filter(w=>ids.has(w.id));
+    }
+    return filteredWords.length>=4?filteredWords:VOCAB_DATA;
+  }, [filteredWords,practiceWrong,wrongList]);
+
+  const handleWrongPractice = () => { setPracticeWrong(true); setTab('quiz'); };
+
+  const navRef = useRef(null);
+  const panelStyle = {maxWidth:'640px',margin:'0 auto',padding:'12px 16px 8px',height:'100%'};
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',height:'100%',background:'linear-gradient(to bottom,#f0f9ff,#e0f2fe)'}}>
+      {/* Header */}
+      <div style={{background:'white',borderBottom:'1px solid #e0f2fe',boxShadow:'0 1px 3px rgba(0,0,0,0.05)',flexShrink:0}}>
+        <div style={{maxWidth:'640px',margin:'0 auto',padding:'10px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+            <span style={{fontSize:'24px'}}>🇰🇷</span>
+            <div>
+              <div style={{fontWeight:'700',fontSize:'15px',color:'#1e293b',lineHeight:1.2}}>韓文自學</div>
+              <div style={{fontSize:'11px',color:'#94a3b8'}}>首爾大學韓國語 1A</div>
+            </div>
+          </div>
+          <div style={{fontSize:'12px',background:'#e0f2fe',color:'#0284c7',padding:'4px 12px',borderRadius:'999px',fontWeight:'500'}}>
+            {VOCAB_DATA.length} 個單字
+          </div>
+        </div>
+      </div>
+
+      {/* Scrollable Content */}
+      <div className="page-scroll" style={{flex:1}}>
+        <div style={panelStyle}>
+        {tab==='home' && (
+          <div className="fade-in" style={{display:'flex',flexDirection:'column',gap:'14px'}}>
+            <ProgressCard todayStats={todayStats} todayAcc={todayAcc} learnedCount={learnedCount} wrongCount={wrongList.length} />
+            <div style={{background:'white',borderRadius:'16px',border:'1px solid #e0f2fe',padding:'20px'}}>
+              <div style={{fontSize:'14px',fontWeight:'600',color:'#475569',marginBottom:'12px'}}>🚀 快速開始</div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px'}}>
+                {[
+                  {t:'quiz',label:'單字測驗',desc:'看韓文選中文',icon:'📝',g:'linear-gradient(135deg,#38bdf8,#3b82f6)'},
+                  {t:'listening',label:'聽力測驗',desc:'聽韓文選中文',icon:'🎧',g:'linear-gradient(135deg,#a78bfa,#8b5cf6)'},
+                  {t:'fill',label:'克漏字',desc:'填入正確韓文',icon:'✏️',g:'linear-gradient(135deg,#34d399,#10b981)'},
+                  {t:'translate',label:'小翻譯',desc:'中翻韓練習',icon:'💬',g:'linear-gradient(135deg,#f59e0b,#f97316)'},
+                ].map(it=>(
+                  <button key={it.t} onClick={()=>setTab(it.t)}
+                    style={{background:it.g,color:'white',borderRadius:'14px',padding:'16px',textAlign:'left',
+                      boxShadow:'0 4px 12px rgba(0,0,0,0.1)',border:'none',cursor:'pointer',transition:'transform 0.1s',fontFamily:'inherit'}}>
+                    <div style={{fontSize:'26px',marginBottom:'4px'}}>{it.icon}</div>
+                    <div style={{fontWeight:'600',fontSize:'14px'}}>{it.label}</div>
+                    <div style={{fontSize:'11px',opacity:0.8,marginTop:'2px'}}>{it.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+            {wrongList.length>0&&(
+              <div style={{background:'#fff1f2',borderRadius:'16px',border:'1px solid #fecdd3',padding:'16px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                <div>
+                  <div style={{fontWeight:'600',fontSize:'14px',color:'#be123c'}}>錯題待複習</div>
+                  <div style={{fontSize:'12px',color:'#fda4af',marginTop:'2px'}}>共 {wrongList.length} 個</div>
+                </div>
+                <button onClick={handleWrongPractice}
+                  style={{padding:'8px 16px',background:'#e11d48',color:'white',borderRadius:'12px',fontSize:'13px',fontFamily:'inherit',cursor:'pointer',border:'none'}}>
+                  立即練習
+                </button>
+              </div>
+            )}
+            <div style={{background:'white',borderRadius:'16px',border:'1px solid #e0f2fe',padding:'20px'}}>
+              <div style={{fontSize:'14px',fontWeight:'600',color:'#475569',marginBottom:'10px'}}>💡 學習提示</div>
+              {['每天練習 10 分鐘，效果勝過一次長時間學習','先從「單字測驗」開始，熟悉後嘗試「聽力測驗」','點 🔊 Papago 按鈕可以聽到最自然的韓文發音','答錯的題目會自動加入「錯題本」，別忘了複習！'].map(tip=>(
+                <div key={tip} style={{fontSize:'13px',color:'#64748b',padding:'4px 0',display:'flex',gap:'8px'}}>
+                  <span style={{color:'#0ea5e9'}}>•</span>{tip}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab==='quiz' && (
+          <div className="fade-in" style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+            <div style={{background:'white',borderRadius:'16px',border:'1px solid #e0f2fe',padding:'16px'}}>
+              <div style={{fontSize:'11px',color:'#94a3b8',marginBottom:'8px',fontWeight:'500'}}>選擇題型</div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+                {[{id:'ko-to-cn',label:'🇰🇷→🇹🇼 韓文選中文'},{id:'cn-to-ko',label:'🇹🇼→🇰🇷 中文填韓文'}].map(m=>(
+                  <button key={m.id} onClick={()=>setQMode(m.id)}
+                    style={{padding:'8px',borderRadius:'10px',fontSize:'13px',fontWeight:'500',
+                      background:qMode===m.id?'#0ea5e9':'#f0f9ff',color:qMode===m.id?'white':'#475569',
+                      border:'none',cursor:'pointer',fontFamily:'inherit'}}>
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div style={{background:'white',borderRadius:'16px',border:'1px solid #e0f2fe',padding:'16px'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px'}}>
+                <div style={{fontSize:'11px',color:'#94a3b8',fontWeight:'500'}}>選擇分類</div>
+                {practiceWrong&&<button onClick={()=>setPracticeWrong(false)} style={{fontSize:'11px',color:'#e11d48',background:'none',border:'none',cursor:'pointer'}}>✕ 取消練習錯題</button>}
+              </div>
+              {practiceWrong
+                ? <div style={{background:'#fff1f2',color:'#e11d48',padding:'8px 12px',borderRadius:'8px',border:'1px solid #fecdd3',fontSize:'13px'}}>❌ 練習模式：錯題 ({wrongList.length} 個)</div>
+                : <div style={{display:'flex',flexWrap:'wrap',gap:'6px',maxHeight:'96px',overflowY:'auto'}}>
+                  {categories.map(c=>(
+                    <button key={c} onClick={()=>setCat(c)}
+                      style={{padding:'4px 10px',borderRadius:'999px',fontSize:'12px',background:cat===c?'#0ea5e9':'#f0f9ff',color:cat===c?'white':'#475569',border:'none',cursor:'pointer',fontFamily:'inherit'}}>
+                      {categoryLabels[c]||c}
+                    </button>
+                  ))}
+                </div>}
+            </div>
+            <div style={{textAlign:'center',fontSize:'12px',color:'#94a3b8'}}>題庫：{quizWords.length} 個單字</div>
+            {quizWords.length>=4
+              ? <QuizCard key={`${qMode}-${cat}-${practiceWrong}-${wrongList.length}`} words={quizWords} mode={qMode} onAnswer={recordAnswer} />
+              : <div style={{background:'white',borderRadius:'16px',padding:'40px',textAlign:'center',color:'#94a3b8',border:'1px solid #e0f2fe'}}>此分類單字不足 4 個，請選擇其他分類</div>}
+          </div>
+        )}
+
+        {tab==='listening' && (
+          <div className="fade-in" style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+            <CatSelector selected={cat} onChange={setCat} accent='#8b5cf6' accentLight='#f5f3ff' />
+            <div style={{background:'#fffbeb',border:'1px solid #fde68a',borderRadius:'12px',padding:'10px 14px',fontSize:'12px',color:'#92400e'}}>
+              ⚠️ 聽力功能使用瀏覽器內建語音（ko-KR），建議配合 Papago 按鈕確認發音。
+            </div>
+            {filteredWords.length>=4
+              ? <ListeningQuiz key={cat} words={filteredWords} onAnswer={recordAnswer} />
+              : <div style={{background:'white',borderRadius:'16px',padding:'40px',textAlign:'center',color:'#94a3b8',border:'1px solid #e0f2fe'}}>此分類單字不足 4 個，請選擇其他分類</div>}
+          </div>
+        )}
+
+        {tab==='fill' && (
+          <div className="fade-in" style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+            <div style={{background:'#ecfdf5',border:'1px solid #a7f3d0',borderRadius:'12px',padding:'10px 14px',fontSize:'12px',color:'#065f46'}}>
+              📌 使用職業與場所單字練習基礎句型。之後將加入更多文法題庫。
+            </div>
+            <FillInBlank key="fill" onAnswer={recordAnswer} />
+          </div>
+        )}
+
+        {tab==='translate' && (
+          <div className="fade-in" style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+            <div style={{background:'#faf5ff',border:'1px solid #e9d5ff',borderRadius:'12px',padding:'10px 14px',fontSize:'12px',color:'#6d28d9'}}>
+              💡 先試著自己輸入，不確定時再按確認看答案。
+            </div>
+            <TranslationPractice onAnswer={recordAnswer} />
+          </div>
+        )}
+
+        {tab==='vocab' && (
+          <div className="fade-in" style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+            <CatSelector selected={cat} onChange={setCat} />
+            <div style={{background:'white',borderRadius:'16px',border:'1px solid #e0f2fe',padding:'16px'}}>
+              <VocabBrowser words={filteredWords} />
+            </div>
+          </div>
+        )}
+
+        {tab==='wrong' && (
+          <div className="fade-in" style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+            <WrongList wrongList={wrongList} onPractice={handleWrongPractice} onRemove={removeFromWrong} />
+            {wrongList.length>0&&(
+              <button onClick={()=>{ if(confirm('確定要清空錯題本嗎？')) wrongList.forEach(w=>removeFromWrong(w.id)); }}
+                style={{width:'100%',padding:'8px',fontSize:'12px',color:'#94a3b8',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit'}}>
+                清空錯題本
+              </button>
+            )}
+          </div>
+        )}
+        </div>{/* end panelStyle */}
+      </div>{/* end page-scroll */}
+
+      {/* Bottom Nav */}
+      <div style={{flexShrink:0,background:'white',borderTop:'1px solid #e0f2fe',boxShadow:'0 -2px 10px rgba(0,0,0,0.06)'}}>
+        <div style={{maxWidth:'640px',margin:'0 auto',display:'flex'}}>
+          {TABS.map(t=>(
+            <button key={t.id} onClick={()=>setTab(t.id)}
+              style={{flex:1,padding:'10px 4px',display:'flex',flexDirection:'column',alignItems:'center',
+                color:tab===t.id?'#0ea5e9':'#94a3b8',background:'none',border:'none',cursor:'pointer',
+                fontFamily:'inherit',position:'relative',transition:'color 0.15s'}}>
+              <span style={{fontSize:'20px',lineHeight:1}}>{t.icon}</span>
+              <span style={{fontSize:'9px',marginTop:'3px',fontWeight:tab===t.id?'700':'400'}}>{t.label}</span>
+              {tab===t.id&&<div style={{position:'absolute',top:0,left:'50%',transform:'translateX(-50%)',width:'24px',height:'2px',background:'#0ea5e9',borderRadius:'2px'}} />}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
