@@ -221,7 +221,8 @@ function QuizCard({words, mode, onAnswer}) {
   };
   const handleInput = () => {
     if (result || !input.trim()) return;
-    const ok = input.trim() === current.korean;
+    const normalize = (s) => s.trim().replace(/[.。！!？?]+$/, '').replace(/\s+/g, ' ');
+    const ok = normalize(input) === normalize(current.korean);
     setResult(ok?'correct':'wrong');
     setShowAns(true);
     onAnswer(current, ok);
@@ -558,7 +559,8 @@ function TranslationPractice({onAnswer}) {
 
   const check = () => {
     if (result) return;
-    const ok = input.trim()===cur.answer;
+    const normalize = (s) => s.trim().replace(/[.。！!？?]+$/, '').replace(/\s+/g, ' ');
+    const ok = normalize(input)===normalize(cur.answer);
     setResult(ok?'correct':'wrong');
     onAnswer({id:`t_${cur.id}`,korean:cur.answer,chinese:cur.chinese,category:cur.category,papago:cur.answer}, ok);
   };
